@@ -3,8 +3,8 @@ server:
 
 spring:
   datasource:
-    url: jdbc:mysql://127.0.0.1:3306/ncqa_dev
-    username: ubuntu
+    url: jdbc:mysql://139.199.170.177:3306/ncqa_dev
+    username: root
     password: xuxiao123
     driver-class-name: com.mysql.jdbc.Driver
 
@@ -21,3 +21,4 @@ spring:
 logging:
   file: C:/javaLog/logging.log
   path: C:/
+
