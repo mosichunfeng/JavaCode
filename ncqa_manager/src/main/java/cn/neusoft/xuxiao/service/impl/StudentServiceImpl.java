@@ -1,26 +1,24 @@
 package cn.neusoft.xuxiao.service.impl;
 
-import cn.neusoft.xuxiao.dao.entity.Register;
 import cn.neusoft.xuxiao.dao.entity.Student;
 import cn.neusoft.xuxiao.dao.entity.StudentCriteria;
-import cn.neusoft.xuxiao.dao.entity.StudentRegisterDO;
 import cn.neusoft.xuxiao.dao.inf.IRegisterDao;
 import cn.neusoft.xuxiao.dao.inf.IStudentDao;
 import cn.neusoft.xuxiao.service.inf.IStudentService;
+import cn.neusoft.xuxiao.utils.PageTemplateUtil;
+import cn.neusoft.xuxiao.webapi.entity.BasePage;
+import cn.neusoft.xuxiao.webapi.entity.GetStudentIndexResponse;
+import cn.neusoft.xuxiao.webapi.entity.PaginationResult;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 
 import javax.annotation.Resource;
-import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.Predicate;
-import javax.persistence.criteria.Root;
-import java.util.ArrayList;
-import java.util.Collections;
+import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Set;
+
 
 @Service("studentServiceImpl")
 public class StudentServiceImpl implements IStudentService {
@@ -33,47 +31,54 @@ public class StudentServiceImpl implements IStudentService {
     @Resource(name="IRegisterDao")
     private IRegisterDao registerDao;
 
+
     @Override
-    public List<Student> findAll() {
-        return studentDao.findAll();
+    public PaginationResult<GetStudentIndexResponse> pageQuery(StudentCriteria reqMsg) {
+        if(reqMsg.getRowSrt()==null){
+            reqMsg.setRowSrt(new Integer(0));
+        }
+        reqMsg.setPageSize(10);
+
+        PaginationResult<GetStudentIndexResponse> paginationResult = new PaginationResult<>();
+
+        Integer pageCnt = studentDao.pageQuery_Count(reqMsg);
+        if (pageCnt==null) {
+            paginationResult.setBasePage(new BasePage());
+            return paginationResult;
+        }
+        BasePage pageInfo = PageTemplateUtil.setBasePage(reqMsg, pageCnt);
+
+        GetStudentIndexResponse result = new GetStudentIndexResponse();
+        List<Student> studentList = studentDao.pageQuery(reqMsg);
+        result.setStudentList(studentList);
+
+        paginationResult.setBasePage(pageInfo);
+        paginationResult.setResult(result);
+
+        return paginationResult;
     }
 
     @Override
-    public List<StudentRegisterDO> pageQuery(StudentCriteria studentCriteria) {
-        /*
-        Specification<Student> specification = new Specification<Student>() {
-            @Override
-            public Predicate toPredicate(Root root, CriteriaQuery criteriaQuery, CriteriaBuilder criteriaBuilder) {
-                Predicate equal = criteriaBuilder.equal(root.get("student_name"), "李瑾");
-                return equal;
-            }
-        };
-        List<Student> all = studentDao.findAll(specification);
-        for (Student student : all) {
-            System.out.println(student);
-        }
-        return all;
-    */
+    public Set<String> getAvailableClass() {
+        Set<String> set = new LinkedHashSet<>();
         List<Student> studentList = studentDao.findAll();
-        List<StudentRegisterDO> studentRegisterDOList = new ArrayList<>();
-        /*
-        iter增强for循环
-         */
-        int i  = 0;
-        long start = System.currentTimeMillis();
         if(!CollectionUtils.isEmpty(studentList)) {
             for (Student student : studentList) {
-                logger.info("循环{}次",i);
-                i++;
-                StudentRegisterDO studentRegisterDO = new StudentRegisterDO();
-                studentRegisterDO.setStudent(student);
-                List<Register> registerList = registerDao.findRegistersByStudentId(student.getStudent_id());
-                studentRegisterDO.setRegisterList(registerList);
-                studentRegisterDOList.add(studentRegisterDO);
+                if(student.getStudent_class()!=null){
+                    set.add(student.getStudent_class());
+                }
             }
         }
-        long end = System.currentTimeMillis();
-        System.out.println("花费"+(end-start));
-        return studentRegisterDOList;
+        return set;
+    }
+
+    @Override
+    public void deleteStudent(Student student) {
+        studentDao.deleteStudent(student);
+    }
+
+    @Override
+    public void updateStudent(Student student) {
+        studentDao.updateStudent(student);
     }
 }

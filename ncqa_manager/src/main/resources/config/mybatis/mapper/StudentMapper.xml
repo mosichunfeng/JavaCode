@@ -1,0 +1,157 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.neusoft.xuxiao.dao.inf.IStudentDao">
+
+    <sql id="page_query_sql">
+      <![CDATA[
+        SELECT
+          s.id,
+          s.student_id,
+          s.student_name,
+          s.student_class,
+          s.student_gender,
+          s.student_tel,
+          s.work_detail
+        FROM
+          student s
+        ]]>
+    </sql>
+
+    <sql id="page_query_condition">
+        <if test="id != null">
+            AND s.id = #{student_id,jdbcType=INTEGER}
+        </if>
+        <if test="student_id != null">
+            AND s.student_id = #{student_id,jdbcType=VARCHAR}
+        </if>
+        <if test="student_name != null">
+            AND s.student_name = #{student_name,jdbcType=VARCHAR}
+        </if>
+        <if test="student_class != null">
+            AND s.student_class = #{student_class,jdbcType=VARCHAR}
+        </if>
+        <if test="student_gender != null">
+            AND s.student_gender = #{student_gender,jdbcType=VARCHAR}
+        </if>
+        <if test="student_tel != null">
+            AND s.student_tel = #{student_tel,jdbcType=VARCHAR}
+        </if>
+        <if test="work_detail != null">
+            AND s.work_detail = #{work_detail,jdbcType=INTEGER}
+        </if>
+    </sql>
+
+    <sql id="insert">
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="student_id != null">
+                student_id,
+            </if>
+            <if test="student_name != null">
+                student_name,
+            </if>
+            <if test="student_class != null">
+                student_class,
+            </if>
+            <if test="student_gender != null">
+                student_gender,
+            </if>
+            <if test="student_tel != null">
+                student_tel,
+            </if>
+            <if test="work_detail != null">
+                work_detail,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="student_id != null">
+                #{student_id,jdbcType=VARCHAR},
+            </if>
+            <if test="student_name != null">
+                #{student_name,jdbcType=VARCHAR},
+            </if>
+            <if test="student_class != null">
+                #{student_class,jdbcType=VARCHAR},
+            </if>
+            <if test="student_gender != null">
+                #{student_gender,jdbcType=VARCHAR},
+            </if>
+            <if test="student_tel != null">
+                #{student_tel,jdbcType=VARCHAR},
+            </if>
+            <if test="work_detail != null">
+                #{work_detail,jdbcType=INTEGER},
+            </if>
+        </trim>
+    </sql>
+
+    <sql id="update">
+        <if test="id != null">
+            id = #{id,jdbcType=INTEGER},
+        </if>
+        <if test="student_id != null">
+            student_id = #{student_id,jdbcType=VARCHAR},
+        </if>
+        <if test="student_name != null">
+            student_name = #{student_name,jdbcType=VARCHAR},
+        </if>
+        <if test="student_class != null">
+            student_class = #{student_class,jdbcType=VARCHAR},
+        </if>
+        <if test="student_gender != null">
+            student_gender = #{student_gender,jdbcType=VARCHAR},
+        </if>
+        <if test="student_tel != null">
+            student_tel = #{student_tel,jdbcType=VARCHAR},
+        </if>
+        <if test="work_detail != null">
+            work_detail = #{work_detail,jdbcType=INTEGER},
+        </if>
+    </sql>
+
+    <select id="pageQuery_Count" parameterType="cn.neusoft.xuxiao.dao.entity.StudentCriteria" resultType="java.lang.Integer">
+        SELECT
+          COUNT(1)
+        FROM
+          student s
+        <trim prefixOverrides="AND | OR " prefix="WHERE">
+            <include refid="page_query_condition"/>
+        </trim>
+    </select>
+
+    <select id="pageQuery" parameterType="cn.neusoft.xuxiao.dao.entity.StudentCriteria" resultType="cn.neusoft.xuxiao.dao.entity.Student">
+        <include refid="page_query_sql"/>
+        <trim prefixOverrides="AND | OR " prefix="WHERE">
+            <include refid="page_query_condition"/>
+        </trim>
+        <if test="pageSize > 0">
+            LIMIT #{rowSrt}, #{pageSize}
+        </if>
+    </select>
+
+    <delete id="deleteStudent" parameterType="cn.neusoft.xuxiao.dao.entity.Student">
+        DELETE FROM
+          student
+        WHERE id=#{id}
+    </delete>
+
+    <update id="updateStudent" parameterType="cn.neusoft.xuxiao.dao.entity.Student">
+        UPDATE student
+        <set>
+            <include refid="update"/>
+        </set>
+        WHERE id=#{id}
+    </update>
+
+    <insert id="insertStudent" parameterType="cn.neusoft.xuxiao.dao.entity.Student">
+        INSERT INTO
+        student
+        <include refid="insert"/>
+    </insert>
+
+    <select id="findAll" resultType="cn.neusoft.xuxiao.dao.entity.Student">
+        SELECT
+          *
+        FROM
+          student s
+    </select>
+</mapper>
