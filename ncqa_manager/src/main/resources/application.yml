@@ -4,7 +4,7 @@ server:
 spring:
   datasource:
     url: jdbc:mysql://localhost:3306/ncqa-dev-copy
-    username: root
+    username: ubuntu
     password: xuxiao123
     driver-class-name: com.mysql.jdbc.Driver
 
