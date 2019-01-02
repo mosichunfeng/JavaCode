@@ -18,8 +18,8 @@
         </span>
 
     <div class="hh">
-        <span class="label label-warning zz">cleverui(超级管理员)</span>
-        <a class="btn btn-info btn-sm" href="#">退出登录</a>
+        <span class="label label-warning zz"><#if user.username??>${user.username}</#if></span>
+        <a class="btn btn-info btn-sm" href="http://localhost:4397/logout">退出登录</a>
     </div>
     <br>
     <br>
@@ -94,7 +94,7 @@
                     </#if>
                     </td>
                     <td>
-                        <button type="button" class="btn btn-info" onclick="ShowCreateModal(${student.id},'${student.student_id}')">编辑</button>
+                        <button type="button" class="btn btn-info" onclick="ShowCreateModal(${student.id},${student.student_id})">编辑</button>
                         <button type="button" class="btn btn-success" onclick="ShowCreateModal2('${student.student_name}',${student.id})">
                             删除
                         </button>

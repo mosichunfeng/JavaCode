@@ -6,11 +6,13 @@ import lombok.Data;
 @Data
 public class RightAnswer {
 
-    private int id;
+    private Integer id;
 
-    private String answer_index;
+    private Integer question_id;
 
-    private String answer_content;
+    private String right_answer_index;
+
+    private String right_answer_content;
 
 
 }

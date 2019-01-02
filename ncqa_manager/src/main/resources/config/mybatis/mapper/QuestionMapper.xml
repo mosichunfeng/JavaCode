@@ -2,4 +2,298 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="cn.neusoft.xuxiao.dao.inf.IQuestionDao">
 
+    <sql id="page_query_sql">
+        SELECT
+          question_base.id,
+          question_base.name AS name,
+          kind_id,
+          description,
+          create_time,
+          start_time,
+          end_time,
+          available,
+          kind.name AS kind_name
+        FROM
+          question_base
+        LEFT JOIN
+          kind
+        ON
+          question_base.kind_id = kind.id
+    </sql>
+
+
+    <sql id="page_query_condition">
+        <if test="name != null">
+            AND name = #{name,jdbcType=VARCHAR}
+        </if>
+        <if test="kind_id != null">
+            AND kind_id = #{kind_id,jdbcType=INTEGER}
+        </if>
+        <if test="kind_name != null">
+            AND kind_name = #{kind_name,jdbcType=VARCHAR}
+        </if>
+        <if test="available != null">
+            AND available = #{available,jdbcType=INTEGER}
+        </if>
+    </sql>
+
+    <sql id="insert">
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="name != null">
+                name,
+            </if>
+            <if test="kind_id != null">
+                kind_id,
+            </if>
+            <if test="description != null">
+                description,
+            </if>
+            <if test="create_time != null">
+                create_time,
+            </if>
+            <if test="start_time != null">
+                start_time,
+            </if>
+            <if test="end_time != null">
+                end_time,
+            </if>
+            <if test="available != null">
+                available,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="name != null">
+                #{name,jdbcType=VARCHAR},
+            </if>
+            <if test="kind_id != null">
+                #{kind_id,jdbcType=INTEGER},
+            </if>
+            <if test="description != null">
+                #{description,jdbcType=VARCHAR},
+            </if>
+            <if test="create_time != null">
+                #{create_time,jdbcType=VARCHAR},
+            </if>
+            <if test="start_time != null">
+                #{start_time,jdbcType=VARCHAR},
+            </if>
+            <if test="end_time != null">
+                #{end_time,jdbcType=VARCHAR},
+            </if>
+            <if test="available != null">
+                #{available,jdbcType=INTEGER},
+            </if>
+        </trim>
+    </sql>
+
+    <sql id="update">
+        <if test="name != null">
+            name = #{name,jdbcType=VARCHAR},
+        </if>
+        <if test="kind_id != null">
+            kind_id = #{kind_id,jdbcType=INTEGER},
+        </if>
+        <if test="description != null">
+            description = #{description,jdbcType=VARCHAR},
+        </if>
+        <if test="start_time != null">
+            start_time = #{start_time,jdbcType=VARCHAR},
+        </if>
+        <if test="end_time != null">
+            end_time = #{end_time,jdbcType=VARCHAR},
+        </if>
+        <if test="available != null">
+            available = #{available,jdbcType=INTEGER},
+        </if>
+    </sql>
+
+    <select id="pageQuery_Count" parameterType="cn.neusoft.xuxiao.dao.entity.QuestionBaseCriteria"
+            resultType="java.lang.Integer">
+        SELECT
+        COUNT(1)
+        FROM
+        question_base
+        <trim prefixOverrides="AND | OR " prefix="WHERE">
+            <include refid="page_query_condition"/>
+        </trim>
+    </select>
+
+    <select id="pageQueryQuestionBase" parameterType="cn.neusoft.xuxiao.dao.entity.QuestionBaseCriteria"
+            resultType="cn.neusoft.xuxiao.dao.entity.QuestionBase">
+        <include refid="page_query_sql"/>
+        <trim prefixOverrides="AND | OR " prefix="WHERE">
+            <include refid="page_query_condition"/>
+        </trim>
+        <if test="pageSize > 0">
+            LIMIT #{rowSrt}, #{pageSize}
+        </if>
+    </select>
+
+    <insert id="insertQuestionBase">
+        INSERT INTO
+        question_base
+        <include refid="insert"/>
+    </insert>
+
+    <update id="updateQuestionBase">
+        UPDATE question_base
+        <set>
+            <include refid="update"/>
+        </set>
+        WHERE id=#{id}
+    </update>
+
+    <delete id="deleteQuestionBase">
+        DELETE FROM
+          question_base
+        WHERE id=#{id}
+    </delete>
+
+    <select id="findAllKind" resultType="cn.neusoft.xuxiao.dao.entity.KindDO">
+        SELECT
+          id,
+          name
+        FROM
+          kind
+    </select>
+
+    <resultMap id="pageQueryQuestion" type="cn.neusoft.xuxiao.dao.entity.Question">
+        <id column="id" jdbcType="INTEGER" property="id"/>
+        <result column="question_index" jdbcType="INTEGER" property="question_index"/>
+        <result column="question_base_id" jdbcType="INTEGER" property="question_base_id"/>
+        <result column="select_type" jdbcType="INTEGER" property="select_type"/>
+        <result column="content" jdbcType="VARCHAR" property="content"/>
+        <association property="rightAnswer" javaType="cn.neusoft.xuxiao.dao.entity.RightAnswer">
+            <id column="right_answer_id" javaType="INTEGER" property="id"/>
+            <result column="ra_question_id" property="question_id"/>
+            <result column="right_answer_index" property="right_answer_index"/>
+            <result column="right_answer_content" property="right_answer_content"/>
+        </association>
+        <collection property="answerList" ofType="cn.neusoft.xuxiao.dao.entity.Answer">
+            <id column="answer_id" jdbcType="INTEGER" property="id"/>
+            <result column="a_question_id" jdbcType="INTEGER" property="question_id"/>
+            <result column="answer_index" jdbcType="VARCHAR" property="answer_index"/>
+            <result column="answer_content" jdbcType="VARCHAR" property="answer_content"/>
+        </collection>
+
+    </resultMap>
+
+    <select id="pageQuery" parameterType="cn.neusoft.xuxiao.dao.entity.QuestionCriteria"
+            resultMap="pageQueryQuestion">
+        SELECT
+        q.id,
+        q.question_index,
+        q.select_type,
+        q.content,
+        q.question_base_id,
+        a.question_id,
+        a.answer_index,
+        a.answer_content,
+        ra.question_id AS question_id1,
+        ra.right_answer_index,
+        ra.right_answer_content
+        FROM
+        question q
+        INNER JOIN answer a
+        ON q.id = a.question_id
+        INNER JOIN right_answer ra
+        ON q.id = ra.question_id
+        WHERE q.id IN
+        (SELECT
+        x.id
+        FROM
+        (SELECT
+        q1.id
+        FROM
+        question q1
+        <if test="question_base_id">
+            WHERE q1.question_base_id=#{question_base_id}
+        </if>
+        <if test="pageSize > 0">
+            LIMIT #{rowSrt}, #{pageSize}
+        </if>) AS x)
+    </select>
+    <select id="pageQuery_Count2" parameterType="cn.neusoft.xuxiao.dao.entity.QuestionCriteria"
+            resultType="java.lang.Integer">
+        SELECT
+        COUNT(1)
+        FROM
+        question q
+        <if test="question_base_id">
+            WHERE q.question_base_id=#{question_base_id}
+        </if>
+    </select>
+
+    <select id="findGradeListByBaseId" resultType="cn.neusoft.xuxiao.dao.entity.GradeDO">
+		select
+			s.student_id,s.student_name,s.student_class,
+			eh.start_time,eh.end_time,eh.grade
+		from
+			exam_history eh
+		INNER JOIN student s
+			ON eh.user_id = s.id
+		where eh.question_base_id=#{base_id}
+		and status = 1
+	</select>
+
+    <select id="getQuestionBaseById" resultType="cn.neusoft.xuxiao.dao.entity.QuestionBase">
+		select
+			*
+		from
+			question_base
+		where
+			id=#{id}
+	</select>
+
+    <insert id ="insertQuestion" parameterType="java.util.List" useGeneratedKeys="true" keyProperty="id">
+        insert into
+        question(
+        question_base_id,
+        question_index,
+        select_type,
+        content
+        )
+        values
+        <foreach collection="list" item="question" separator=",">
+            (
+            #{question.question_base_id},
+            #{question.question_index},
+            #{question.select_type},
+            #{question.content}
+            )
+        </foreach>
+    </insert>
+
+    <insert id = "insertAnswer" parameterType="java.util.List">
+        insert into
+        answer(
+        question_id,
+        answer_index,
+        answer_content
+        )
+        values
+        <foreach collection="list" item="answer" separator=",">
+            (
+            #{answer.question_id},
+            #{answer.answer_index},
+            #{answer.answer_content}
+            )
+        </foreach>
+    </insert>
+    <insert id = "insertRightAnswer" parameterType="java.util.List">
+        insert into
+        right_answer(
+        question_id,
+        right_answer_index,
+        right_answer_content
+        )
+        values
+        <foreach collection="list" item="right_answer" separator=",">
+            (
+            #{right_answer.question_id},
+            #{right_answer.right_answer_index},
+            #{right_answer.right_answer_content}
+            )
+        </foreach>
+    </insert>
 </mapper>

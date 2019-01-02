@@ -1,0 +1,32 @@
+.title{
+    font-style: italic
+}
+
+.hh{
+    display:inline-block;
+    float:right;
+}
+
+.xi{
+    text-align: center;
+}
+
+.zz{
+    padding: 9px;
+}
+
+.ip{
+    width: 20px;
+}
+
+.pagination{
+    margin:20px 0 !important;
+}
+
+/* .form-control{
+    width: 60% !important;
+} */
+
+.bg{
+    width: 8%;
+}

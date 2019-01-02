@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=0.67, maximum-scale=1, user-scalable=no">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <link rel="stylesheet" href="css/login.css">
+    <script type="text/javascript" src="../static/jQuery/jquery-3.3.1.js"></script>
+    <link rel="stylesheet" href="../static/bootstrap/css/bootstrap.min.css">
+    <script type="text/javascript" src="../static/bootstrap/js/bootstrap.min.js"></script>
+</head>
+
+<body>
+<div class="container-fluid">
+    <div class="main">
+        <div class="parent">
+                <span class="title">
+                    Perfect答题志后台管理系统
+                </span>
+            <form class="form-group" method="post" action="http://localhost:4397/login">
+                <input type="text" value="用户名" name="username" onFocus="this.value = '';" onBlur="if (this.value == '') {this.value = '用户名';}"
+                       required="" class="input1">
+                <input type="password" value="" name="password" onFocus="this.value = '';" onBlur="if (this.value == '') {this.value = '';}"
+                       required="" class="input2">
+                <input type="submit" class="sure" value="登录">
+            </form>
+        </div>
+        <div class="image">
+        </div>
+    </div>
+</div>
+</body>
+
+</html>

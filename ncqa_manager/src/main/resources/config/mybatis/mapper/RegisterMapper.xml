@@ -2,4 +2,14 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="cn.neusoft.xuxiao.dao.inf.IRegisterDao">
 
+    <select id="findAll" resultType="cn.neusoft.xuxiao.dao.entity.Register">
+        SELECT
+			student_id,
+			student_name,
+			start_time,
+			image_url,
+			address
+		FROM
+			register
+    </select>
 </mapper>

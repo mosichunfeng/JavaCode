@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.neusoft.xuxiao.dao.inf.IAuthorityDao">
+
+    <sql id="insert">
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="user_id != null">
+                user_id,
+            </if>
+            <if test="group_id != null">
+                group_id,
+            </if>
+            <if test="auth_add != null">
+                auth_add,
+            </if>
+            <if test="auth_modify != null">
+                auth_modify,
+            </if>
+            <if test="auth_delete != null">
+                #{auth_delete,jdbcType=INTEGER},
+            </if>
+            <if test="auth_download != null">
+                #{auth_download,jdbcType=INTEGER},
+            </if>
+            <if test="auth_upload != null">
+                #{auth_upload,jdbcType=INTEGER},
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="user_id != null">
+                #{user_id,jdbcType=INTEGER},
+            </if>
+            <if test="group_id != null">
+                #{group_id,jdbcType=INTEGER},
+            </if>
+            <if test="auth_add != null">
+                #{auth_add,jdbcType=INTEGER},
+            </if>
+            <if test="auth_modify != null">
+                #{auth_modify,jdbcType=INTEGER},
+            </if>
+            <if test="auth_delete != null">
+                #{auth_delete,jdbcType=INTEGER},
+            </if>
+            <if test="auth_download != null">
+                #{auth_download,jdbcType=INTEGER},
+            </if>
+            <if test="auth_upload != null">
+                #{auth_upload,jdbcType=INTEGER},
+            </if>
+        </trim>
+    </sql>
+
+    <sql id="update">
+        <if test="user_id != null">
+            user_id = #{user_id,jdbcType=INTEGER},
+        </if>
+        <if test="group_id != null">
+            group_id = #{group_id,jdbcType=INTEGER},
+        </if>
+        <if test="auth_add != null">
+            auth_add = #{auth_add,jdbcType=INTEGER},
+        </if>
+        <if test="auth_modify != null">
+            auth_modify = #{auth_modify,jdbcType=INTEGER},
+        </if>
+        <if test="auth_delete != null">
+            auth_delete = #{auth_delete,jdbcType=INTEGER},
+        </if>
+        <if test="auth_download != null">
+            auth_download = #{auth_download,jdbcType=INTEGER},
+        </if>
+        <if test="auth_upload != null">
+            auth_upload =#{auth_upload,jdbcType=INTEGER},
+        </if>
+    </sql>
+
+    <insert id="insertAuthority" parameterType="cn.neusoft.xuxiao.dao.entity.Authority">
+        INSERT INTO
+        authority
+        <include refid="insert"/>
+    </insert>
+
+    <update id="updateAuthority" parameterType="cn.neusoft.xuxiao.dao.entity.Authority">
+        UPDATE authority
+        <set>
+            <include refid="update"/>
+        </set>
+        WHERE
+        id=#{id}
+    </update>
+
+    <select id="findAuthorityByGroupIdAndUserId" parameterType="cn.neusoft.xuxiao.dao.entity.AuthorityDO"
+            resultType="cn.neusoft.xuxiao.dao.entity.Authority">
+        SELECT
+          id,
+          user_id,
+          group_id,
+          auth_add,
+          auth_modify,
+          auth_delete,
+          auth_download,
+          auth_upload
+        FROM
+          authority
+        WHERE
+          user_id=#{user_id}
+        AND
+          group_id = #{group_id}
+    </select>
+</mapper>

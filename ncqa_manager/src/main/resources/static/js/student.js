@@ -1,6 +1,6 @@
 function ShowCreateModal(id, student_id) {
     console.log("id===>"+id);
-    console.log("student_id===>"+id);
+    console.log("student_id===>"+student_id);
     $("#uid").attr("value",id);
     $("#student_id2").attr("value",student_id);
 
@@ -48,14 +48,7 @@ $("#createFileSureBut").click(function () {
         student_tel2+"&student_gender="+student_gender2;
     xmlHttp.send(data);
     xmlHttp.onreadystatechange = function () {
-        if (xmlHttp.readyState == 4 && xmlHttp.status == 200) {
-            $("#exampleModalLabel2").html("修改成功！")
-            $("#myModal").modal('show');
-            location.reload();
-        }else{
-            $("#exampleModalLabel2").html("修改失败！")
-            $("#myModal").modal('show');
-        }
+        checkStatus("修改成功!",xmlHttp);
     }
 
 });
@@ -78,14 +71,7 @@ $("#make_sure").click(function () {
     xmlHttp.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
     xmlHttp.send("id="+id);
     xmlHttp.onreadystatechange = function () {
-        if (xmlHttp.readyState == 4 && xmlHttp.status == 200) {
-            $("#exampleModalLabel2").html("删除成功！")
-            $("#myModal").modal('show');
-            location.reload();
-        }else{
-            $("#exampleModalLabel2").html("删除失败！")
-            $("#myModal").modal('show');
-        }
+        checkStatus("删除成功!",xmlHttp);
     }
 })
 
@@ -129,35 +115,23 @@ function getCookie(name)
     return unescape(arr[2]);
 }
 
-// $(function () {
-//     var selectedIndex = getCookie("select_1");
-//
-//     //拉取下拉框的数据
-//     var xmlHttp = createXMLHttpRequest();
-//     xmlHttp.open("GET", "http://localhost:4397/student/getAvailableClass", "false");
-//     xmlHttp.send(null);
-//     xmlHttp.onreadystatechange = function () {
-//         if (xmlHttp.readyState == 4 && xmlHttp.status == 200) {
-//             var text = xmlHttp.responseText;
-//             console.log(text);
-//             var s = text.replace('[', '').replace(']', '').replace(/\"/g, '').trim();
-//             var arr = s.split(",");
-//             for (var i = 0; i < arr.length; i++) {
-//                 var option = document.createElement("option");
-//                 $(option).val(i);
-//                 $(option).text(arr[i]);
-//
-//                 $("#select1").append(option);
-//                 if(selectedIndex != null) {
-//                     $("#select1").val(selectedIndex);
-//                 }
-//             }
-//         }
-//     };
-//
-//
-//
-//
-// })
+function checkStatus(info,xmlHttp) {
+    if (xmlHttp.readyState == 4 && xmlHttp.status == 200) {
+        var text = xmlHttp.responseText;
+        var json = jQuery.parseJSON(text);
+        if (json.code == 200) {
+            book(info);
+            location.reload();
+        } else {
+            book(json.remark);
+        }
+    }
+}
 
-//同步筛选数据，发起请求
+function book(title) {
+    $("#exampleModalLabel2").html(title)
+    $('#myModal').modal('show');
+    setTimeout(function () {
+        $("#myModal").modal("hide")
+    }, 2000);
+}

@@ -23,4 +23,18 @@ public interface IStudentDao{
 
     List<Student> findAll();
 
+    /**
+     * 查询在校人数
+     */
+    Integer findInCount();
+
+    /**
+     * 查询实习人数
+     */
+    Integer findOutCount();
+
+    /**
+     * 是否实习
+     */
+    Integer getWorkDetail(String student_id);
 }

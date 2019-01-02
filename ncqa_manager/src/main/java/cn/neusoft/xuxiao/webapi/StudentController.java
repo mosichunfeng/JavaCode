@@ -4,6 +4,8 @@ package cn.neusoft.xuxiao.webapi;
 import cn.neusoft.xuxiao.constants.ServiceResponseCode;
 import cn.neusoft.xuxiao.dao.entity.Student;
 import cn.neusoft.xuxiao.dao.entity.StudentCriteria;
+import cn.neusoft.xuxiao.dao.entity.User;
+import cn.neusoft.xuxiao.exception.BusinessException;
 import cn.neusoft.xuxiao.service.inf.IStudentService;
 import cn.neusoft.xuxiao.utils.StringUtil;
 import cn.neusoft.xuxiao.webapi.base.BaseController;
@@ -15,6 +17,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.util.Set;
 
 @Controller
@@ -30,12 +34,13 @@ public class StudentController extends BaseController {
      * @return
      */
     @RequestMapping("/pageQuery")
-    public String pageQuery(StudentCriteria reqMsg, ModelMap map){
+    public String pageQuery(StudentCriteria reqMsg, ModelMap map, HttpServletRequest request, HttpServletResponse response){
+        User user = checkAndReturnUser(request,response);
         trimAll(reqMsg);
         PaginationResult<GetStudentIndexResponse> result = studentService.pageQuery(reqMsg);
         map.put("result", result);
-        System.out.println(result);
         map.put("searchInfo", reqMsg);
+        map.put("user", user);
         return "student_index";
     }
 
@@ -58,7 +63,8 @@ public class StudentController extends BaseController {
      */
     @RequestMapping("/deleteStudent")
     @ResponseBody
-    public String deleteStudent(Student student){
+    public String deleteStudent(Student student,HttpServletRequest request,HttpServletResponse response){
+        User user = checkAndReturnUser(request,response);
         studentService.deleteStudent(student);
         return generateResponse(ServiceResponseCode.OK);
     }
@@ -68,7 +74,8 @@ public class StudentController extends BaseController {
      */
     @RequestMapping("/updateStudent")
     @ResponseBody
-    public String updateStudents(Student student){
+    public String updateStudents(Student student,HttpServletRequest request,HttpServletResponse response){
+        User user = checkAndReturnUser(request,response);
         studentService.updateStudent(student);
         return generateResponse(ServiceResponseCode.OK);
     }

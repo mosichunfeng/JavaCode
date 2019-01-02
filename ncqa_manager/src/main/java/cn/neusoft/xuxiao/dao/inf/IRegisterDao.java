@@ -10,4 +10,6 @@ import java.util.List;
 @Mapper
 public interface IRegisterDao {
     public List<Register> findRegistersByStudentId(String student_id);
+
+    List<Register> findAll();
 }

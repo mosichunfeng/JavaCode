@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.neusoft.xuxiao.dao.inf.IUserDao">
+
+    <sql id="insert">
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="username != null">
+                username,
+            </if>
+            <if test="password != null">
+                password,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="username != null">
+                #{username,jdbcType=VARCHAR},
+            </if>
+            <if test="password != null">
+                #{password,jdbcType=VARCHAR},
+            </if>
+        </trim>
+    </sql>
+
+    <select id="findUserByUsername" parameterType="java.lang.String" resultType="cn.neusoft.xuxiao.dao.entity.User">
+        SELECT
+          id,
+          username,
+          password
+        FROM
+          user
+        WHERE username=#{username}
+    </select>
+
+    <insert id="insertUser" parameterType="cn.neusoft.xuxiao.dao.entity.User">
+        <selectKey resultType="java.lang.Integer" order="AFTER" keyProperty="id">
+            SELECT LAST_INSERT_ID()
+        </selectKey>
+        INSERT INTO
+          user
+        <include refid="insert"/>
+    </insert>
+
+    <select id="findAll" resultType="cn.neusoft.xuxiao.dao.entity.User">
+        SELECT
+          id,
+          username
+        FROM
+          user
+    </select>
+
+    <select id="findUserById" resultType="cn.neusoft.xuxiao.dao.entity.User">
+        SELECT
+          id,
+          username
+        FROM
+          user
+    </select>
+</mapper>

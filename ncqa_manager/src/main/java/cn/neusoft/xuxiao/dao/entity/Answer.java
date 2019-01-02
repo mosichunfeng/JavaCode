@@ -6,7 +6,9 @@ import lombok.Data;
 @Data
 public class Answer {
 
-    private int id;
+    private Integer id;
+
+    private Integer question_id;
 
     private String answer_index;
 

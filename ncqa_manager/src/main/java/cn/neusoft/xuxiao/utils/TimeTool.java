@@ -456,4 +456,9 @@ public class TimeTool {
 		}
 		return result;
 	}
+
+	public static Integer getNowYear(){
+		Calendar c = Calendar.getInstance();
+		return c.get(Calendar.YEAR);
+	}
 }

@@ -85,12 +85,6 @@
     </sql>
 
     <sql id="update">
-        <if test="id != null">
-            id = #{id,jdbcType=INTEGER},
-        </if>
-        <if test="student_id != null">
-            student_id = #{student_id,jdbcType=VARCHAR},
-        </if>
         <if test="student_name != null">
             student_name = #{student_name,jdbcType=VARCHAR},
         </if>
@@ -153,5 +147,31 @@
           *
         FROM
           student s
+    </select>
+
+    <select id="findInCount" resultType="java.lang.Integer">
+        SELECT
+          COUNT(1)
+        FROM
+          student
+        WHERE
+          work_detail=0
+    </select>
+
+    <select id="findOutCount" resultType="java.lang.Integer">
+        SELECT
+          COUNT(1)
+        FROM
+          student
+        WHERE
+          work_detail=1
+    </select>
+
+    <select id="getWorkDetail" parameterType="java.lang.String" resultType="java.lang.Integer">
+        SELECT
+          work_detail
+        FROM
+          student
+        where student_id = #{student_id};
     </select>
 </mapper>
