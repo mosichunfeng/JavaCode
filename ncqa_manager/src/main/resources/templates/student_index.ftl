@@ -19,12 +19,12 @@
 
     <div class="hh">
         <span class="label label-warning zz"><#if user.username??>${user.username}</#if></span>
-        <a class="btn btn-info btn-sm" href="http://localhost:4397/logout">退出登录</a>
+        <a class="btn btn-info btn-sm" href="http://139.199.170.177:4397/logout">退出登录</a>
     </div>
     <br>
     <br>
 
-    <form action="http://localhost:4397/student/pageQuery" class="form-inline xi">
+    <form action="http://139.199.170.177:4397/student/pageQuery" class="form-inline xi">
         <div class="form-group">
             <label for="student_id" class="sr-only" >学号：</label>
             <input type="text" name="student_id" <#if searchInfo.student_id??>value="${searchInfo.student_id}"</#if> class="form-control" id="student_id" placeholder="学号">
@@ -109,7 +109,7 @@
             <div class="form-group">
                 <div class="input-inline input-inline">
                     <#if result.basePage.pageNo != 1>
-                        <a class="btn btn-info btn-sm" href="http://localhost:4397/student/pageQuery?student_id=
+                        <a class="btn btn-info btn-sm" href="http://139.199.170.177:4397/student/pageQuery?student_id=
                         <#if searchInfo.student_id??>
                                 ${searchInfo.student_id}
                         </#if>
@@ -129,7 +129,7 @@
                         <#if searchInfo.work_detail??>
                             ${searchInfo.work_detail}
                         </#if>">首页</a>
-                        <a class="btn btn-info btn-sm" href="http://localhost:4397/student/pageQuery?pageNo=${result.basePage.pageNo-1}&rowSrt=${result.basePage.rowSrt-result.basePage.pageSize}&student_id=
+                        <a class="btn btn-info btn-sm" href="http://139.199.170.177:4397/student/pageQuery?pageNo=${result.basePage.pageNo-1}&rowSrt=${result.basePage.rowSrt-result.basePage.pageSize}&student_id=
                         <#if searchInfo.student_id??>
                                 ${searchInfo.student_id}
                         </#if>
@@ -154,7 +154,7 @@
 
                     <#if (result.basePage.pageNo<result.basePage.pages)>
                         <a class="btn btn-info btn-sm"
-                           href="http://localhost:4397/student/pageQuery?pageNo=${result.basePage.pageNo+1}&rowSrt=${result.basePage.rowSrt+result.basePage.pageSize}&student_id=
+                           href="http://139.199.170.177:4397/student/pageQuery?pageNo=${result.basePage.pageNo+1}&rowSrt=${result.basePage.rowSrt+result.basePage.pageSize}&student_id=
                         <#if searchInfo.student_id??>
                                 ${searchInfo.student_id}
                         </#if>
@@ -175,7 +175,7 @@
                             ${searchInfo.work_detail}
                         </#if>">下一页</a>
                         <a class="btn btn-info btn-sm"
-                           href="http://localhost:4397/student/pageQuery?pageNo=${result.basePage.pages}&student_id=
+                           href="http://139.199.170.177:4397/student/pageQuery?pageNo=${result.basePage.pages}&student_id=
                         <#if searchInfo.student_id??>
                                 ${searchInfo.student_id}
                         </#if>

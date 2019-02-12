@@ -23,7 +23,7 @@
 
     <div class="hh">
         <span class="label label-warning zz"><#if user.username??>${user.username}</#if></span>
-        <a class="btn btn-info btn-sm" href="http://localhost:4397/logout">退出登录</a>
+        <a class="btn btn-info btn-sm" href="http://139.199.170.177:4397/logout">退出登录</a>
         <button class="btn btn-success btn-sm" onclick="createBaseEvent(1008611)">新增题库</a></button>
     </div>
 
@@ -57,11 +57,11 @@
                    <td>无效</td>
             </#if>
             <td>
-                <a class="btn btn-info success" href="http://localhost:4397/question/pageQuery?question_base_id=${questionBase.id}">查看</a>
+                <a class="btn btn-info success" href="http://139.199.170.177:4397/question/pageQuery?question_base_id=${questionBase.id}">查看</a>
                 <button type="button" class="btn btn-info" onclick="modifyEvent(${questionBase.id})">编辑</button>
                 <button type="button" class="btn btn-success" onclick="deleteEvent(${questionBase.id})">删除</button>
                 <button type="button" class="btn btn-info" onclick="importFile(${questionBase.id})">导入</button>
-                <a class="btn btn-warning" href="http://localhost:4397/question/exportExamGrade?question_base_id=${questionBase.id}">导出</a>
+                <a class="btn btn-warning" href="http://139.199.170.177:4397/question/exportExamGrade?question_base_id=${questionBase.id}">导出</a>
             </td>
         </tr>
      </#list>
@@ -73,12 +73,12 @@
             <div class="form-group">
                 <div class="input-inline input-inline">
                     <#if result.basePage.pageNo != 1>
-                        <a class="btn btn-success " href="http://localhost:4397/question/pageQueryBase">首页</a>
-                        <a class="btn btn-success " href="http://localhost:4397/question/pageQueryBase?pageNo=${result.basePage.pageNo-1}&rowSrt=${result.basePage.rowSrt-result.basePage.pageSize}">上一页</a>
+                        <a class="btn btn-success " href="http://139.199.170.177:4397/question/pageQueryBase">首页</a>
+                        <a class="btn btn-success " href="http://139.199.170.177:4397/question/pageQueryBase?pageNo=${result.basePage.pageNo-1}&rowSrt=${result.basePage.rowSrt-result.basePage.pageSize}">上一页</a>
                     </#if>
                     <#if (result.basePage.pageNo<result.basePage.pages)>
-                        <a class="btn btn-success" href="http://localhost:4397/question/pageQueryBase?pageNo=${result.basePage.pageNo+1}&rowSrt=${result.basePage.rowSrt+result.basePage.pageSize}">下一页</a>
-                        <a class="btn btn-success" href="http://localhost:4397/question/pageQueryBase?pageNo=${result.basePage.pages}">尾页</a>
+                        <a class="btn btn-success" href="http://139.199.170.177:4397/question/pageQueryBase?pageNo=${result.basePage.pageNo+1}&rowSrt=${result.basePage.rowSrt+result.basePage.pageSize}">下一页</a>
+                        <a class="btn btn-success" href="http://139.199.170.177:4397/question/pageQueryBase?pageNo=${result.basePage.pages}">尾页</a>
                     </#if>
                     <input type="text" class="form-control input-medium" id="page_index" placeholder="页数">
                     <button class="btn btn-success ">跳页</button>
@@ -176,7 +176,7 @@
                     <h4 class="modal-title" id="sure">Excel模板上传</h4>
                 </div>
                 <div class="modal-body">
-                    <form enctype="multipart/form-data" action="http://localhost:4397/question/importQuestion" method="post">
+                    <form enctype="multipart/form-data" action="http://139.199.170.177:4397/question/importQuestion" method="post">
                         <input type="hidden" name="question_base_id" id="qb_id3"></input>
                         <input type="file" name="proxyfile" id="input-file" style="display: none;"  accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel">
                         <button type="button" class="btn btn-success" id="select_file">选择文件</button>
@@ -185,7 +185,7 @@
                         <label class="control-label" id="select-info">未选择文件</label>
                         <br>
                         <br>
-                        <a class="btn btn-success" href="http://localhost:4397/question/exportTemplate" id="tp_dw">模板下载</a>
+                        <a class="btn btn-success" href="http://139.199.170.177:4397/question/exportTemplate" id="tp_dw">模板下载</a>
 
                 </div>
                 <div class="modal-footer">

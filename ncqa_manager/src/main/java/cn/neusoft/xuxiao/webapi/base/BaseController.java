@@ -95,7 +95,7 @@ public class BaseController {
         if (StringUtil.isEmpty(token)) {
             request.getSession().setAttribute("orgin_url", request.getRequestURL());
             try {
-                response.sendRedirect("http://localhost:4397/login.html");
+                response.sendRedirect("http://139.199.170.177:4397/login.html");
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -104,7 +104,7 @@ public class BaseController {
         String  userData = (String) redisUtil.get("SESSION:" + token);
         if(StringUtil.isEmpty(userData)){
             try {
-                response.sendRedirect("http://localhost:4397/login.html");
+                response.sendRedirect("http://139.199.170.177:4397/login.html");
             } catch (IOException e) {
                 e.printStackTrace();
             }
