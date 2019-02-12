@@ -17,13 +17,13 @@
                 auth_modify,
             </if>
             <if test="auth_delete != null">
-                #{auth_delete,jdbcType=INTEGER},
+                auth_delete,
             </if>
             <if test="auth_download != null">
-                #{auth_download,jdbcType=INTEGER},
+                auth_download,
             </if>
             <if test="auth_upload != null">
-                #{auth_upload,jdbcType=INTEGER},
+                auth_upload,
             </if>
         </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">

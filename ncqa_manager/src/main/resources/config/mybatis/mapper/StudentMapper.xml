@@ -174,4 +174,20 @@
           student
         where student_id = #{student_id};
     </select>
+
+    <!--<insert id="insertStudentSet" parameterType="">-->
+
+    <!--</insert>-->
+
+    <!--<insert id="insertClassSet" parameterType="java.util.Set" useGeneratedKeys="true" keyProperty="id">-->
+        <!--INSERT INTO-->
+          <!--class(name,grade_id)-->
+        <!--VALUES-->
+        <!--<foreach collection="set" item="class" separator=",">-->
+            <!--(-->
+            <!--#{class.name},-->
+            <!--#{class.grade_id}-->
+            <!--)-->
+        <!--</foreach>-->
+    <!--</insert>-->
 </mapper>

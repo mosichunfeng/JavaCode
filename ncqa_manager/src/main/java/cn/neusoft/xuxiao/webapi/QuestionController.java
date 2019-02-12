@@ -38,10 +38,6 @@ public class QuestionController extends BaseController {
     public String pageQuery(QuestionCriteria questionCriteria, ModelMap map, HttpServletRequest request,HttpServletResponse response) {
         User user = checkAndReturnUser(request,response);
         PaginationResult<GetQuestionIndexResponse> result = questionService.pageQuery(questionCriteria);
-        List<Question> questionList = result.getResult().getQuestionList();
-        for (Question question : questionList) {
-            System.out.println(question);
-        }
         map.put("result", result);
         map.put("user", user);
         return "question_index";

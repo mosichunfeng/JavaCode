@@ -31,6 +31,5 @@ public class ClassConstants {
         classMap.put("19", "物联网工程15202");
         classMap.put("20", "物联网工程15203");
         classMap.put("21", "物联网工程15204");
-
     }
 }

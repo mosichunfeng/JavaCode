@@ -5,7 +5,6 @@ import cn.neusoft.xuxiao.constants.ServiceResponseCode;
 import cn.neusoft.xuxiao.dao.entity.Student;
 import cn.neusoft.xuxiao.dao.entity.StudentCriteria;
 import cn.neusoft.xuxiao.dao.entity.User;
-import cn.neusoft.xuxiao.exception.BusinessException;
 import cn.neusoft.xuxiao.service.inf.IStudentService;
 import cn.neusoft.xuxiao.utils.StringUtil;
 import cn.neusoft.xuxiao.webapi.base.BaseController;
@@ -14,7 +13,9 @@ import cn.neusoft.xuxiao.webapi.entity.PaginationResult;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
@@ -25,17 +26,18 @@ import java.util.Set;
 @RequestMapping("/student")
 public class StudentController extends BaseController {
 
-    @Resource(name="studentServiceImpl")
+    @Resource(name = "studentServiceImpl")
     private IStudentService studentService;
 
     /**
      * 条件分页排序分页查询
+     *
      * @param
      * @return
      */
     @RequestMapping("/pageQuery")
-    public String pageQuery(StudentCriteria reqMsg, ModelMap map, HttpServletRequest request, HttpServletResponse response){
-        User user = checkAndReturnUser(request,response);
+    public String pageQuery(StudentCriteria reqMsg, ModelMap map, HttpServletRequest request, HttpServletResponse response) {
+        User user = checkAndReturnUser(request, response);
         trimAll(reqMsg);
         PaginationResult<GetStudentIndexResponse> result = studentService.pageQuery(reqMsg);
         map.put("result", result);
@@ -51,20 +53,35 @@ public class StudentController extends BaseController {
 
     @RequestMapping("/getAvailableClass")
     @ResponseBody
-    public String [] getAvailableClass(){
+    public String[] getAvailableClass() {
         Set<String> availableClass = studentService.getAvailableClass();
-        String [] result = new String[availableClass.size()];
+        String[] result = new String[availableClass.size()];
         return availableClass.toArray(result);
     }
 
+    /**
+     * 导入学生
+     */
+    @RequestMapping("/importStudent")
+    public void importStudent(@RequestParam("proxyfile") MultipartFile file){
+        studentService.importStudent(file);
+    }
+
+    /**
+     * 导出模板
+     */
+    @RequestMapping("exportTemplate")
+    public void exportTemplate(HttpServletResponse response){
+        studentService.exportTemplate(response);
+    }
 
     /**
      * 删除学生
      */
     @RequestMapping("/deleteStudent")
     @ResponseBody
-    public String deleteStudent(Student student,HttpServletRequest request,HttpServletResponse response){
-        User user = checkAndReturnUser(request,response);
+    public String deleteStudent(Student student, HttpServletRequest request, HttpServletResponse response) {
+        User user = checkAndReturnUser(request, response);
         studentService.deleteStudent(student);
         return generateResponse(ServiceResponseCode.OK);
     }
@@ -74,43 +91,44 @@ public class StudentController extends BaseController {
      */
     @RequestMapping("/updateStudent")
     @ResponseBody
-    public String updateStudents(Student student,HttpServletRequest request,HttpServletResponse response){
-        User user = checkAndReturnUser(request,response);
+    public String updateStudents(Student student, HttpServletRequest request, HttpServletResponse response) {
+        User user = checkAndReturnUser(request, response);
         studentService.updateStudent(student);
         return generateResponse(ServiceResponseCode.OK);
     }
 
-    public static void trimAll(StudentCriteria studentCriteria){
-        if(studentCriteria!=null) {
-            if(studentCriteria.getStudent_id()!=null) {
+    public static void trimAll(StudentCriteria studentCriteria) {
+        if (studentCriteria != null) {
+            if (studentCriteria.getStudent_id() != null) {
                 studentCriteria.setStudent_id(studentCriteria.getStudent_id().trim());
             }
-            if(studentCriteria.getStudent_name()!=null) {
+            if (studentCriteria.getStudent_name() != null) {
                 studentCriteria.setStudent_name(studentCriteria.getStudent_name().trim());
             }
-            if(studentCriteria.getStudent_class()!=null) {
+            if (studentCriteria.getStudent_class() != null) {
                 studentCriteria.setStudent_class(studentCriteria.getStudent_class().trim());
             }
-            if(studentCriteria.getStudent_tel()!=null) {
+            if (studentCriteria.getStudent_tel() != null) {
                 studentCriteria.setStudent_tel(studentCriteria.getStudent_tel().trim());
             }
 
-            if(StringUtil.isEmpty(studentCriteria.getStudent_id())){
+            if (StringUtil.isEmpty(studentCriteria.getStudent_id())) {
                 studentCriteria.setStudent_id(null);
             }
-            if(StringUtil.isEmpty(studentCriteria.getStudent_name())){
+            if (StringUtil.isEmpty(studentCriteria.getStudent_name())) {
                 studentCriteria.setStudent_name(null);
             }
-            if(StringUtil.isEmpty(studentCriteria.getStudent_class())){
+            if (StringUtil.isEmpty(studentCriteria.getStudent_class())) {
                 studentCriteria.setStudent_class(null);
             }
-            if(StringUtil.isEmpty(studentCriteria.getStudent_gender())){
+            if (StringUtil.isEmpty(studentCriteria.getStudent_gender())) {
                 studentCriteria.setStudent_gender(null);
             }
-            if(StringUtil.isEmpty(studentCriteria.getStudent_tel())){
+            if (StringUtil.isEmpty(studentCriteria.getStudent_tel())) {
                 studentCriteria.setStudent_tel(null);
             }
         }
+
     }
 }
 

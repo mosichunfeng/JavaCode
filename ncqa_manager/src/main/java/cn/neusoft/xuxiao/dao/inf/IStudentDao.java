@@ -6,6 +6,7 @@ import cn.neusoft.xuxiao.dao.entity.StudentCriteria;
 import org.apache.ibatis.annotations.Mapper;
 import org.springframework.stereotype.Repository;
 
+import java.util.LinkedHashSet;
 import java.util.List;
 
 @Repository("IStudentDao")
@@ -37,4 +38,8 @@ public interface IStudentDao{
      * 是否实习
      */
     Integer getWorkDetail(String student_id);
+
+    void insertStudentSet(LinkedHashSet<String> set);
+
+    void insertClassSet(LinkedHashSet<String> set);
 }

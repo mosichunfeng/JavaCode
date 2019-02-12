@@ -6,6 +6,6 @@ function fun(id){
     }else if(id==3){
         self.location.href="http://localhost:4397/register/pageQuery";
     }else if(id==4){
-        self.location.href="http://localhost:4397/authority/pageQuery";
+        self.location.href="http://localhost:4397/authority/getIndexByGroup";
     }
 }

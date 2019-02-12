@@ -5,7 +5,10 @@ import cn.neusoft.xuxiao.dao.entity.StudentCriteria;
 
 import cn.neusoft.xuxiao.webapi.entity.GetStudentIndexResponse;
 import cn.neusoft.xuxiao.webapi.entity.PaginationResult;
+import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.util.Set;
 
 /**
@@ -21,4 +24,7 @@ public interface IStudentService {
     void updateStudent(Student student);
 
 
+    void exportTemplate(HttpServletResponse response);
+
+    void importStudent(MultipartFile file);
 }
