@@ -23,7 +23,7 @@
 
     <div class="hh">
         <span class="label label-warning zz"><#if user.username??>${user.username}</#if></span>
-        <a class="btn btn-info btn-sm" href="http://139.199.170.177:4397/logout">退出登录</a>
+        <a class="btn btn-info btn-sm" href="http://www.jiandev.cn:4397/logout">退出登录</a>
         <button type="button" class="btn btn-success  btn-sm">签到设置</button>
     </div>
 

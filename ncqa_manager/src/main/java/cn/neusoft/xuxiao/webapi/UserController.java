@@ -26,7 +26,7 @@ public class UserController extends BaseController {
         CookieUtils.setCookie(request, response, "ncqa_token", token);
         if(request.getSession().getAttribute("orgin_url")!=null){
             String orgin_url = request.getSession().getAttribute("orgin_url").toString();
-            if(!StringUtil.isEmpty(orgin_url)&&!orgin_url.equals("http://139.199.170.177:4397/login.html")){
+            if(!StringUtil.isEmpty(orgin_url)&&!orgin_url.equals("http://www.jiandev.cn:4397/login.html")){
                 request.getSession().removeAttribute("orgin_url");
                 response.sendRedirect(orgin_url);
                 return ;

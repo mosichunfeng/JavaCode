@@ -9,7 +9,7 @@ spring:
     driver-class-name: com.mysql.jdbc.Driver
 
   redis:
-    host: 139.199.170.177
+    host: www.jiandev.cn
     port: 6379
     password: xuxiao123
 
