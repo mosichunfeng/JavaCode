@@ -12,4 +12,33 @@
 		FROM
 			register
     </select>
+
+	<select id="pageQuery" parameterType="cn.neusoft.xuxiao.dao.entity.RegisterCriteria" resultType="cn.neusoft.xuxiao.dao.entity.Register">
+		SELECT
+			id,
+			student_id,
+			student_name,
+			start_time,
+			address
+		FROM
+			register
+		WHERE
+			start_time &gt;= #{start_time}
+		AND
+			start_time &lt;= #{end_time}
+		<if test="pageSize > 0">
+			LIMIT #{rowSrt}, #{pageSize}
+		</if>
+	</select>
+
+	<select id="pageQuery_Count" parameterType="cn.neusoft.xuxiao.dao.entity.RegisterCriteria" resultType="java.lang.Integer">
+		SELECT
+	  		COUNT(1)
+	  	FROM
+	  		register
+		WHERE
+		    start_time &gt;= #{start_time}
+		AND
+		    start_time &lt;= #{end_time}
+	</select>
 </mapper>

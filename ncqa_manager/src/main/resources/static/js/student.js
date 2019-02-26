@@ -6,7 +6,7 @@ function ShowCreateModal(id, student_id) {
 
     //拉取下拉框的数据
     var xmlHttp = createXMLHttpRequest();
-    xmlHttp.open("GET", "http://www.jiandev.cn:4397/student/getAvailableClass", "false");
+    xmlHttp.open("GET", "http://139.199.170.177:4397/student/getAvailableClass", "false");
     xmlHttp.send(null);
     xmlHttp.onreadystatechange = function () {
         if (xmlHttp.readyState == 4 && xmlHttp.status == 200) {
@@ -41,7 +41,7 @@ $("#createFileSureBut").click(function () {
     var student_gender2 = $("#student_gender2").val();
 
     var xmlHttp = createXMLHttpRequest();
-    xmlHttp.open("POST", "http://www.jiandev.cn:4397/student/updateStudent", "true");
+    xmlHttp.open("POST", "http://139.199.170.177:4397/student/updateStudent", "true");
     xmlHttp.setRequestHeader("Content-Type", "application/x-www-form-urlencoded")
     var data = "id=" + id + "&student_id="+student_id2+ "&student_name=" + student_name2 +
         "&student_class=" + student_class2 + "&student_tel=" +
@@ -67,7 +67,7 @@ $("#make_sure").click(function () {
     var id = $("#uid2").val();
     //执行aJax删除
     var xmlHttp = createXMLHttpRequest();
-    xmlHttp.open("POST","http://www.jiandev.cn:4397/student/deleteStudent","false");
+    xmlHttp.open("POST","http://139.199.170.177:4397/student/deleteStudent","false");
     xmlHttp.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
     xmlHttp.send("id="+id);
     xmlHttp.onreadystatechange = function () {
@@ -135,3 +135,25 @@ function book(title) {
         $("#myModal").modal("hide")
     }, 2000);
 }
+
+
+function importFile(id){
+    $("#uploadModel").modal('show');
+}
+
+$("#select_file").click(function () {
+    $("#input-file").click();
+});
+
+$("#input-file").on("change",function (e) {
+    var e = e || window.event;
+    //获取 文件 个数 取消的时候使用
+    var files = e.target.files;
+    if(files.length>0){
+        var fileName = files[0].name;
+        $("#select-info").text(fileName);
+    }else{
+        //清空文件名
+        $("#select-info").text("未选择文件");
+    }
+});

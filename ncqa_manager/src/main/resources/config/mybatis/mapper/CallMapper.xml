@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.neusoft.xuxiao.dao.inf.ICallDao">
+
+    <insert id="insertCall" parameterType="cn.neusoft.xuxiao.dao.entity.Call">
+        INSERT INTO
+        call_info
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="classes != null">
+                classes,
+            </if>
+            <if test="start_time != null">
+                start_time,
+            </if>
+            <if test="end_time != null">
+                end_time,
+            </if>
+            <if test="status != null">
+                status,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="classes != null">
+                #{classes,jdbcType=VARCHAR},
+            </if>
+            <if test="start_time != null">
+                #{start_time,jdbcType=VARCHAR},
+            </if>
+            <if test="end_time != null">
+                #{end_time,jdbcType=VARCHAR},
+            </if>
+            <if test="status != null">
+                #{status,jdbcType=INTEGER},
+            </if>
+        </trim>
+    </insert>
+
+    <select id="updateCall" parameterType="cn.neusoft.xuxiao.dao.entity.Call"
+            resultType="cn.neusoft.xuxiao.dao.entity.Call">
+        SELECT
+        classes,
+        start_time,
+        end_time,
+        status
+        FROM
+        call_info
+        <trim prefixOverrides="AND | OR " prefix="WHERE">
+            <include refid="page_query_condition"/>
+        </trim>
+        <if test="pageSize > 0">
+            LIMIT #{rowSrt}, #{pageSize}
+        </if>
+    </select>
+
+    <sql id="page_query_condition">
+        <if test="classes != null">
+            AND classes like %#{classes,jdbcType=VARCHAR}%
+        </if>
+        <if test="start_time != null">
+            AND start_time = #{start_time,jdbcType=VARCHAR}
+        </if>
+        <if test="end_time != null">
+            AND end_time = #{end_time,jdbcType=VARCHAR}
+        </if>
+        <if test="status != null">
+            AND status = #{status,jdbcType=INTEGER}
+        </if>
+    </sql>
+
+    <select id="pageQuery_Count" parameterType="cn.neusoft.xuxiao.dao.entity.CallCriteria"
+            resultType="java.lang.Integer">
+        SELECT
+        COUNT(1)
+        FROM
+        call_info
+        <trim prefixOverrides="AND | OR " prefix="WHERE">
+            <include refid="page_query_condition"/>
+        </trim>
+
+    </select>
+
+    <select id="findCallById" parameterType="java.lang.Integer" resultType="cn.neusoft.xuxiao.dao.entity.Call">
+        SELECT
+          id,
+          classes,
+          start_time,
+          end_time,
+          status
+        FROM
+          call_info
+        WHERE
+          id=#{id}
+    </select>
+
+    <select id="pageQuery" parameterType="cn.neusoft.xuxiao.dao.entity.CallCriteria"
+            resultType="cn.neusoft.xuxiao.dao.entity.Call">
+        SELECT
+        id,
+        classes,
+        start_time,
+        end_time,
+        status
+        FROM
+        call_info
+        <trim prefixOverrides="AND | OR " prefix="WHERE">
+            <include refid="page_query_condition"/>
+        </trim>
+        <if test="pageSize > 0">
+            LIMIT #{rowSrt}, #{pageSize}
+        </if>
+    </select>
+
+    <select id="findNoCallStudentList"
+            resultType="cn.neusoft.xuxiao.dao.entity.Student">
+        SELECT
+            *
+        FROM
+            student s
+        WHERE
+            s.student_class_id
+        IN
+        (
+            <foreach collection="allClass" item="class" separator=",">
+                #{class}
+            </foreach>
+        )
+        AND
+            s.student_id
+        NOT IN
+        (
+           SELECT
+            student_id
+           FROM
+            register r
+           WHERE
+              start_time &gt;= #{call.start_time}
+            AND
+          start_time &lt;= #{call.end_time}
+        )
+    </select>
+</mapper>

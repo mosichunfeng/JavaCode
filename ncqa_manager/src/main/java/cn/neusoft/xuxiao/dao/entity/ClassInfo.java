@@ -14,15 +14,8 @@ public class ClassInfo {
      */
     private String name;
 
-    /**
-     * 年级id
-     */
-    private Integer grade_id;
 
-    /**
-     * 辅导员id
-     */
-    private Integer teacher_id;
+    private int member;
 
     /**
      * 是否实习

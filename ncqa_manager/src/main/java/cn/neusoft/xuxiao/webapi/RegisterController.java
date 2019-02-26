@@ -6,6 +6,7 @@ import cn.neusoft.xuxiao.dao.entity.User;
 import cn.neusoft.xuxiao.exception.BusinessException;
 import cn.neusoft.xuxiao.service.inf.IRegisterService;
 import cn.neusoft.xuxiao.webapi.base.BaseController;
+import cn.neusoft.xuxiao.webapi.entity.FindRegisterListResponse;
 import cn.neusoft.xuxiao.webapi.entity.GetRegisterIndexResponse;
 import cn.neusoft.xuxiao.webapi.entity.PaginationResult;
 import org.springframework.stereotype.Controller;
@@ -29,6 +30,16 @@ public class RegisterController extends BaseController {
         User user = checkAndReturnUser(request,response);
         PaginationResult<GetRegisterIndexResponse> result = registerService.pageQuery(reqMsg);
         map.put("user", user);
+        return "register_index";
+    }
+
+    @RequestMapping("/findRegisterListByCallId")
+    public String findRegisterListByCallId(ModelMap map,RegisterCriteria reqMsg,HttpServletRequest request,HttpServletResponse response){
+        User user = checkAndReturnUser(request,response);
+        PaginationResult<FindRegisterListResponse> result = registerService.findRegisterListByCallId(reqMsg);
+        map.put("user", user);
+        map.put("result", result);
+        map.put("call_id", reqMsg.getCall_id());
         return "register_index";
     }
 }

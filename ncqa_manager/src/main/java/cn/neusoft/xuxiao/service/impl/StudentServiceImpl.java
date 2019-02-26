@@ -2,6 +2,7 @@ package cn.neusoft.xuxiao.service.impl;
 
 import cn.neusoft.xuxiao.constants.ServiceResponseCode;
 import cn.neusoft.xuxiao.dao.entity.ClassInfo;
+import cn.neusoft.xuxiao.dao.entity.ClassInfoCriteria;
 import cn.neusoft.xuxiao.dao.entity.Student;
 import cn.neusoft.xuxiao.dao.entity.StudentCriteria;
 import cn.neusoft.xuxiao.dao.inf.IRegisterDao;
@@ -10,9 +11,8 @@ import cn.neusoft.xuxiao.exception.BusinessException;
 import cn.neusoft.xuxiao.service.inf.IStudentService;
 import cn.neusoft.xuxiao.utils.ExcelUtil;
 import cn.neusoft.xuxiao.utils.PageTemplateUtil;
-import cn.neusoft.xuxiao.webapi.entity.BasePage;
-import cn.neusoft.xuxiao.webapi.entity.GetStudentIndexResponse;
-import cn.neusoft.xuxiao.webapi.entity.PaginationResult;
+import cn.neusoft.xuxiao.utils.StringUtil;
+import cn.neusoft.xuxiao.webapi.entity.*;
 import org.apache.poi.hssf.usermodel.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -95,7 +95,7 @@ public class StudentServiceImpl implements IStudentService {
     public void exportTemplate(HttpServletResponse response) {
         HSSFWorkbook workbook = new HSSFWorkbook();
         HSSFSheet sheet = workbook.createSheet("学生模板");
-        String[] headers = {"编号", "学号", "姓名","班级", "性别"};
+        String[] headers = {"编号", "学号", "姓名","班级", "性别","手机号"};
         String fileName = "学生上传模板" + System.currentTimeMillis() + ".xls";
         try {
             fileName = new String(fileName.getBytes("GB2312"), "8859_1");
@@ -116,6 +116,7 @@ public class StudentServiceImpl implements IStudentService {
         row1.createCell(2).setCellValue("何佩");
         row1.createCell(3).setCellValue("物联网15202");
         row1.createCell(4).setCellValue("男");
+        row1.createCell(5).setCellValue("18888888888");
 
         HSSFRow row2 = sheet.createRow(2);
         row2.createCell(0).setCellValue(2);
@@ -123,7 +124,7 @@ public class StudentServiceImpl implements IStudentService {
         row2.createCell(2).setCellValue("郑金浩");
         row2.createCell(3).setCellValue("物联网15202");
         row2.createCell(4).setCellValue("男");
-
+        row2.createCell(5).setCellValue("17777777777");
         response.setContentType("application/octet-stream");
         response.setHeader("Content-disposition", "attachment;filename=" + fileName);
         try {
@@ -137,12 +138,17 @@ public class StudentServiceImpl implements IStudentService {
     @Override
     public void importStudent(MultipartFile file) {
         String fileName = file.getOriginalFilename();
-        String[] columns = { "编号", "学号", "姓名", "班级", "性别" ,"联系电话"};
+        String[] columns = { "编号", "学号", "姓名", "班级", "性别" ,"手机号"};
         InputStream is = null;
         try {
             is = file.getInputStream();
         } catch (IOException e) {
             e.printStackTrace();
+        }
+        List<ClassInfo> classInfoList = studentDao.findAllClass();
+        Map<String,Integer> class_map = new HashMap<>();
+        for (ClassInfo classInfo : classInfoList) {
+            class_map.put(classInfo.getName(), classInfo.getId());
         }
         List<Map<String, String>> list = ExcelUtil.parseExcel(fileName, is, columns);
         List<Student> studentList = new ArrayList();
@@ -150,27 +156,63 @@ public class StudentServiceImpl implements IStudentService {
             Student student = new Student();
             student.setStudent_id((String) map.get("学号"));
             student.setStudent_name((String) map.get("姓名"));
+            if((class_map.get((String) map.get("班级"))==null)){
+                throw new BusinessException(String.valueOf(ServiceResponseCode.SERVER_ERROR), "请先添加所需的班级！");
+            }
+            student.setStudent_class_id(class_map.get((String) map.get("班级")));
             student.setStudent_class((String) map.get("班级"));
             student.setStudent_gender((String) map.get("性别"));
-            student.setStudent_tel((String)map.get("联系电话"));
+            student.setStudent_tel((String)map.get("手机号"));
             studentList.add(student);
         }
+        studentDao.insertStudentBatch(studentList);
+    }
 
-        /**
-         * 更新班级id
-         */
-        LinkedHashSet<String> set = new LinkedHashSet<>();
-        List<ClassInfo> class_list = new ArrayList<>();
-        Map<Integer,String> map = new HashMap<>();
-        for (Student student : studentList) {
-            set.add(student.getStudent_class());
+    @Override
+    public PaginationResult<GetClassIndexResponse> pageQueryClass(ClassInfoCriteria reqMsg) {
+        if(reqMsg.getRowSrt()==null){
+            reqMsg.setRowSrt(new Integer(0));
         }
+        reqMsg.setPageSize(10);
 
-        for(String class_name : set){
-            ClassInfo ci = new ClassInfo();
-            ci.setName(class_name);
+        PaginationResult<GetClassIndexResponse> paginationResult = new PaginationResult<>();
+
+        Integer pageCnt = studentDao.pageQueryClass_Count(reqMsg);
+        if (pageCnt==null) {
+            paginationResult.setBasePage(new BasePage());
+            return paginationResult;
         }
+        BasePage pageInfo = PageTemplateUtil.setBasePage(reqMsg, pageCnt);
 
+        GetClassIndexResponse result = new GetClassIndexResponse();
+        List<ClassInfo> classInfoList = studentDao.pageQueryClass(reqMsg);
+        result.setClassInfoList(classInfoList);
+        paginationResult.setBasePage(pageInfo);
+        paginationResult.setResult(result);
 
+        return paginationResult;
+    }
+
+    @Override
+    public void modifyClass(ClassInfo classInfo) {
+        studentDao.updateClass(classInfo);
+    }
+
+    @Override
+    public void insertClass(ClassInfo classInfo) {
+        studentDao.insertClass(classInfo);
+    }
+
+    @Override
+    public void deleteClass(ClassInfo classInfo) {
+        studentDao.deleteClass(classInfo);
+    }
+
+    @Override
+    public GetClassListResponse classList() {
+        List<ClassInfo> classInfoList = studentDao.findAllClass();
+        GetClassListResponse response = new GetClassListResponse();
+        response.setClassList(classInfoList);
+        return response;
     }
 }

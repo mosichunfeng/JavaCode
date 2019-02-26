@@ -22,7 +22,7 @@ $("#addSure").click(function(){
     var password = $("#password").val();
 
     xmlHttp = createXMLHttpRequest();
-    xmlHttp.open("POST", "http://www.jiandev.cn:4397/authority/addUser", "true");
+    xmlHttp.open("POST", "http://139.199.170.177:4397/authority/addUser", "true");
     xmlHttp.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
     xmlHttp.send("username="+username+"&password="+password);
     xmlHttp.onreadystatechange = function () {
@@ -54,7 +54,7 @@ function submitEvent(id) {
 
     var xmlHttp = createXMLHttpRequest();
 
-    xmlHttp.open("POST", "http://www.jiandev.cn:4397/authority/modify", "true");
+    xmlHttp.open("POST", "http://139.199.170.177:4397/authority/modify", "true");
     xmlHttp.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
     var data = "id=" + id +"&auth_add=" + add + "&auth_modify=" + modify
         + "&auth_delete=" + delete1 + "&auth_download=" + download + "&auth_upload=" + upload;
@@ -86,6 +86,6 @@ function checkStatus(info,xmlHttp) {
 }
 
 function changePage(id) {
-    window.location.href="http://www.jiandev.cn:4397/authority/getIndexByGroup?group_id="+id;
+    window.location.href="http://139.199.170.177:4397/authority/getIndexByGroup?group_id="+id;
 
 }

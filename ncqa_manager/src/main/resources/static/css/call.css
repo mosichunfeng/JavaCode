@@ -1,0 +1,25 @@
+.hh {
+    display: inline-block;
+    float: right;
+}
+
+.xi {
+    text-align: center;
+    padding: 0;
+}
+
+.zz {
+    padding: 9px;
+}
+
+.bg{
+    width: 8%;
+}
+
+.ip{
+    width: 20px;
+}
+
+li{
+    list-style: none;
+}

@@ -16,7 +16,16 @@
           student s
         ]]>
     </sql>
-
+    <sql id="page_query_class_sql">
+        <![CDATA[
+        SELECT
+          c.id,
+          c.name,
+          c.work_detail
+        FROM
+          class c
+        ]]>
+    </sql>
     <sql id="page_query_condition">
         <if test="id != null">
             AND s.id = #{student_id,jdbcType=INTEGER}
@@ -30,6 +39,9 @@
         <if test="student_class != null">
             AND s.student_class = #{student_class,jdbcType=VARCHAR}
         </if>
+        <if test="student_class_id != null">
+            AND s.student_class_id = #{student_class_id,jdbcType=INTEGER}
+        </if>
         <if test="student_gender != null">
             AND s.student_gender = #{student_gender,jdbcType=VARCHAR}
         </if>
@@ -40,7 +52,14 @@
             AND s.work_detail = #{work_detail,jdbcType=INTEGER}
         </if>
     </sql>
-
+    <sql id="page_query_class_condition">
+        <if test="name != null">
+            AND c.name = #{name,jdbcType=VARCHAR}
+        </if>
+        <if test="work_detail != null">
+            AND c.work_detail = #{work_detail,jdbcType=INTEGER}
+        </if>
+    </sql>
     <sql id="insert">
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="student_id != null">
@@ -84,6 +103,25 @@
         </trim>
     </sql>
 
+    <sql id="insert_class">
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="name != null">
+                name,
+            </if>
+            <if test="work_detail != null">
+                work_detail,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="name != null">
+                #{name,jdbcType=VARCHAR},
+            </if>
+            <if test="work_detail != null">
+                #{work_detail,jdbcType=INTEGER},
+            </if>
+        </trim>
+    </sql>
+
     <sql id="update">
         <if test="student_name != null">
             student_name = #{student_name,jdbcType=VARCHAR},
@@ -101,7 +139,14 @@
             work_detail = #{work_detail,jdbcType=INTEGER},
         </if>
     </sql>
-
+    <sql id="update_class">
+        <if test="name != null">
+            name = #{name,jdbcType=VARCHAR},
+        </if>
+        <if test="work_detail != null">
+            work_detail = #{work_detail,jdbcType=INTEGER},
+        </if>
+    </sql>
     <select id="pageQuery_Count" parameterType="cn.neusoft.xuxiao.dao.entity.StudentCriteria" resultType="java.lang.Integer">
         SELECT
           COUNT(1)
@@ -175,19 +220,111 @@
         where student_id = #{student_id};
     </select>
 
-    <!--<insert id="insertStudentSet" parameterType="">-->
+    <select id="pageQueryClass_Count" resultType="java.lang.Integer">
+        SELECT
+          count(1)
+        FROM
+          class
+        <trim prefixOverrides="AND | OR " prefix="WHERE">
+            <include refid="page_query_class_condition"/>
+        </trim>
+    </select>
 
-    <!--</insert>-->
+    <select id="pageQueryClass" resultType="cn.neusoft.xuxiao.dao.entity.ClassInfo">
+        <include refid="page_query_class_sql"/>
+        <trim prefixOverrides="AND | OR " prefix="WHERE">
+            <include refid="page_query_class_condition"/>
+        </trim>
+        <if test="pageSize > 0">
+            LIMIT #{rowSrt}, #{pageSize}
+        </if>
+    </select>
 
-    <!--<insert id="insertClassSet" parameterType="java.util.Set" useGeneratedKeys="true" keyProperty="id">-->
-        <!--INSERT INTO-->
-          <!--class(name,grade_id)-->
-        <!--VALUES-->
-        <!--<foreach collection="set" item="class" separator=",">-->
-            <!--(-->
-            <!--#{class.name},-->
-            <!--#{class.grade_id}-->
-            <!--)-->
-        <!--</foreach>-->
-    <!--</insert>-->
+
+    <update id="updateClass">
+        UPDATE class
+        <set>
+            <include refid="update_class"/>
+        </set>
+        WHERE id=#{id}
+    </update>
+
+    <insert id="insertClass" parameterType="cn.neusoft.xuxiao.dao.entity.ClassInfo">
+        INSERT INTO
+          class
+        <include refid="insert_class"/>
+    </insert>
+
+    <delete id="deleteClass" parameterType="cn.neusoft.xuxiao.dao.entity.ClassInfo">
+        DELETE FROM
+          class
+        WHERE id=#{id}
+    </delete>
+
+    <select id="findAllClass" resultType="cn.neusoft.xuxiao.dao.entity.ClassInfo">
+        SELECT
+          id,
+          name
+        FROM
+          class
+    </select>
+
+
+    <insert id ="insertStudentBatch" parameterType="java.util.List" useGeneratedKeys="true" keyProperty="id">
+        insert into student
+        (
+        student_id,
+        student_name,
+        student_class,
+        student_class_id,
+        student_gender,
+        student_tel
+        )
+        values
+        <foreach collection="list" item="student" separator=",">
+            (
+                #{student.student_id},
+                #{student.student_name},
+                #{student.student_class},
+                #{student.student_class_id},
+                #{student.student_gender},
+                #{student.student_tel}
+            )
+        </foreach>
+    </insert>
+
+    <select id="findClassById" parameterType="java.lang.Integer" resultType="cn.neusoft.xuxiao.dao.entity.ClassInfo">
+        SELECT
+          *
+        FROM
+          class
+        WHERE id=#{id}
+    </select>
+
+    <select id="findStudentByStudentId" parameterType="java.lang.String" resultType="cn.neusoft.xuxiao.dao.entity.Student">
+        SELECT
+          *
+        FROM
+          student
+        WHERE
+          student_id=#{id}
+    </select>
+
+    <select id="findStudentListByClassId" parameterType="java.lang.Integer" resultType="cn.neusoft.xuxiao.dao.entity.Student">
+        SELECT
+          *
+        FROM
+          student
+        WHERE
+          student_class_id = #{class_id}
+    </select>
+
+    <select id="findStudentIdListByClassId" parameterType="java.lang.Integer" resultType="java.lang.String">
+        SELECT
+          student_id
+        FROM
+          student
+        WHERE
+          student_id = #{student_id}
+    </select>
 </mapper>

@@ -9,12 +9,15 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.io.PrintWriter;
+import java.io.StringWriter;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -90,12 +93,13 @@ public class BaseController {
         return JsonTool.dataToJson(errorResponse);
     }
 
+
     protected User checkAndReturnUser(HttpServletRequest request,HttpServletResponse response){
         String token = CookieUtils.getCookieValue(request, "ncqa_token");
         if (StringUtil.isEmpty(token)) {
             request.getSession().setAttribute("orgin_url", request.getRequestURL());
             try {
-                response.sendRedirect("http://www.jiandev.cn:4397/login.html");
+                response.sendRedirect("http://139.199.170.177:4397/login.html");
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -104,7 +108,7 @@ public class BaseController {
         String  userData = (String) redisUtil.get("SESSION:" + token);
         if(StringUtil.isEmpty(userData)){
             try {
-                response.sendRedirect("http://www.jiandev.cn:4397/login.html");
+                response.sendRedirect("http://139.199.170.177:4397/login.html");
             } catch (IOException e) {
                 e.printStackTrace();
             }

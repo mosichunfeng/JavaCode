@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Document</title>
+    <title>ncqa权限模块</title>
     <link rel="stylesheet" href="../static/bootstrap/css/bootstrap.min.css">
     <script type="text/javascript" src="../static/jQuery/jquery-3.3.1.js"></script>
     <script type="text/javascript" src="../static/bootstrap/js/bootstrap.min.js"></script>
@@ -19,11 +19,12 @@
 <body>
 <div class="container">
     <div class="">
-        <h1 align="center" 欢迎进入权限模块</h1> </div> <div class="hh">
-    <span class="label label-warning zz"><#if user.username??>${user.username}</#if></span>
-    <a class="btn btn-info btn-sm" href="http://www.jiandev.cn:4397/logout">退出登录</a>
-    <button class="btn btn-info btn-sm" onclick="addUser()">添加用户</button>
-</div>
+        <h1 align="center" 欢迎进入权限模块</h1> </div>
+    <div class="hh">
+        <span class="label label-warning zz"><#if user.username??>${user.username}</#if></span>
+        <a class="btn btn-info btn-sm" href="http://139.199.170.177:4397/logout">退出登录</a>
+        <button class="btn btn-info btn-sm" onclick="addUser()">添加用户</button>
+    </div>
 
     <ul id="myTab" class="nav nav-tabs">
         <li class="active">
@@ -54,31 +55,42 @@
                             <td>${authority.username}</td>
                             <td class="tdd">
                                 <div class="ha">
-                                    <input name="status" id="add${authority.id}" <#if authority.auth_add==1>checked="true"</#if> type="checkbox" value="${authority.auth_add}" data-size="small">
+                                    <input name="status" id="add${authority.id}"
+                                           <#if authority.auth_add==1>checked="true"</#if> type="checkbox"
+                                           value="${authority.auth_add}" data-size="small">
                                 </div>
                             </td>
                             <td class="tdd">
                                 <div class="ha">
-                                    <input name="status" id="modify${authority.id}" type="checkbox" <#if authority.auth_modify==1>checked="true"</#if> value="${authority.auth_modify}" data-size="small">
+                                    <input name="status" id="modify${authority.id}" type="checkbox"
+                                           <#if authority.auth_modify==1>checked="true"</#if>
+                                           value="${authority.auth_modify}" data-size="small">
                                 </div>
                             </td>
                             <td class="tdd">
                                 <div class="ha">
-                                    <input name="status" id="delete${authority.id}" type="checkbox" <#if authority.auth_delete==1>checked="true"</#if> value="${authority.auth_delete}" data-size="small">
+                                    <input name="status" id="delete${authority.id}" type="checkbox"
+                                           <#if authority.auth_delete==1>checked="true"</#if>
+                                           value="${authority.auth_delete}" data-size="small">
                                 </div>
                             </td>
                             <td class="tdd">
                                 <div class="ha">
-                                    <input name="status" id="download${authority.id}" type="checkbox" <#if authority.auth_download==1>checked="true"</#if> value="${authority.auth_download}" data-size="small">
+                                    <input name="status" id="download${authority.id}" type="checkbox"
+                                           <#if authority.auth_download==1>checked="true"</#if>
+                                           value="${authority.auth_download}" data-size="small">
                                 </div>
                             </td>
                             <td class="tdd">
                                 <div class="ha">
-                                    <input name="status" id="upload${authority.id}" type="checkbox" <#if authority.auth_upload==1>checked="true"</#if> value="${authority.auth_upload}" data-size="small">
+                                    <input name="status" id="upload${authority.id}" type="checkbox"
+                                           <#if authority.auth_upload==1>checked="true"</#if>
+                                           value="${authority.auth_upload}" data-size="small">
                                 </div>
                             </td>
                             <td>
-                                <button class="btn btn-success btn-xs" onclick="submitEvent(${authority.id})">提交</button>
+                                <button class="btn btn-success btn-xs" onclick="submitEvent(${authority.id})">提交
+                                </button>
                             </td>
                         </tr>
                     </#list>
@@ -104,31 +116,42 @@
                             <td>${authority.username}</td>
                             <td class="tdd">
                                 <div class="ha">
-                                    <input name="status" id="add${authority.id}" <#if authority.auth_add==1>checked="true"</#if> type="checkbox" value="${authority.auth_add}" data-size="small">
+                                    <input name="status" id="add${authority.id}"
+                                           <#if authority.auth_add==1>checked="true"</#if> type="checkbox"
+                                           value="${authority.auth_add}" data-size="small">
                                 </div>
                             </td>
                             <td class="tdd">
                                 <div class="ha">
-                                    <input name="status" id="modify${authority.id}" type="checkbox" <#if authority.auth_modify==1>checked="true"</#if> value="${authority.auth_modify}" data-size="small">
+                                    <input name="status" id="modify${authority.id}" type="checkbox"
+                                           <#if authority.auth_modify==1>checked="true"</#if>
+                                           value="${authority.auth_modify}" data-size="small">
                                 </div>
                             </td>
                             <td class="tdd">
                                 <div class="ha">
-                                    <input name="status" id="delete${authority.id}" type="checkbox" <#if authority.auth_delete==1>checked="true"</#if> value="${authority.auth_delete}" data-size="small">
+                                    <input name="status" id="delete${authority.id}" type="checkbox"
+                                           <#if authority.auth_delete==1>checked="true"</#if>
+                                           value="${authority.auth_delete}" data-size="small">
                                 </div>
                             </td>
                             <td class="tdd">
                                 <div class="ha">
-                                    <input name="status" id="download${authority.id}" type="checkbox" <#if authority.auth_download==1>checked="true"</#if> value="${authority.auth_download}" data-size="small">
+                                    <input name="status" id="download${authority.id}" type="checkbox"
+                                           <#if authority.auth_download==1>checked="true"</#if>
+                                           value="${authority.auth_download}" data-size="small">
                                 </div>
                             </td>
                             <td class="tdd">
                                 <div class="ha">
-                                    <input name="status" id="upload${authority.id}" type="checkbox" <#if authority.auth_upload==1>checked="true"</#if> value="${authority.auth_upload}" data-size="small">
+                                    <input name="status" id="upload${authority.id}" type="checkbox"
+                                           <#if authority.auth_upload==1>checked="true"</#if>
+                                           value="${authority.auth_upload}" data-size="small">
                                 </div>
                             </td>
                             <td>
-                                <button class="btn btn-success btn-xs" onclick="submitEvent(${authority.id})">提交</button>
+                                <button class="btn btn-success btn-xs" onclick="submitEvent(${authority.id})">提交
+                                </button>
                             </td>
                         </tr>
                     </#list>
@@ -154,31 +177,42 @@
                             <td>${authority.username}</td>
                             <td class="tdd">
                                 <div class="ha">
-                                    <input name="status" id="add${authority.id}" <#if authority.auth_add==1>checked="true"</#if> type="checkbox" value="${authority.auth_add}" data-size="small">
+                                    <input name="status" id="add${authority.id}"
+                                           <#if authority.auth_add==1>checked="true"</#if> type="checkbox"
+                                           value="${authority.auth_add}" data-size="small">
                                 </div>
                             </td>
                             <td class="tdd">
                                 <div class="ha">
-                                    <input name="status" id="modify${authority.id}" type="checkbox" <#if authority.auth_modify==1>checked="true"</#if> value="${authority.auth_modify}" data-size="small">
+                                    <input name="status" id="modify${authority.id}" type="checkbox"
+                                           <#if authority.auth_modify==1>checked="true"</#if>
+                                           value="${authority.auth_modify}" data-size="small">
                                 </div>
                             </td>
                             <td class="tdd">
                                 <div class="ha">
-                                    <input name="status" id="delete${authority.id}" type="checkbox" <#if authority.auth_delete==1>checked="true"</#if> value="${authority.auth_delete}" data-size="small">
+                                    <input name="status" id="delete${authority.id}" type="checkbox"
+                                           <#if authority.auth_delete==1>checked="true"</#if>
+                                           value="${authority.auth_delete}" data-size="small">
                                 </div>
                             </td>
                             <td class="tdd">
                                 <div class="ha">
-                                    <input name="status" id="download${authority.id}" type="checkbox" <#if authority.auth_download==1>checked="true"</#if> value="${authority.auth_download}" data-size="small">
+                                    <input name="status" id="download${authority.id}" type="checkbox"
+                                           <#if authority.auth_download==1>checked="true"</#if>
+                                           value="${authority.auth_download}" data-size="small">
                                 </div>
                             </td>
                             <td class="tdd">
                                 <div class="ha">
-                                    <input name="status" id="upload${authority.id}" type="checkbox" <#if authority.auth_upload==1>checked="true"</#if> value="${authority.auth_upload}" data-size="small">
+                                    <input name="status" id="upload${authority.id}" type="checkbox"
+                                           <#if authority.auth_upload==1>checked="true"</#if>
+                                           value="${authority.auth_upload}" data-size="small">
                                 </div>
                             </td>
                             <td>
-                                <button class="btn btn-success btn-xs" onclick="submitEvent(${authority.id})">提交</button>
+                                <button class="btn btn-success btn-xs" onclick="submitEvent(${authority.id})">提交
+                                </button>
                             </td>
                         </tr>
                     </#list>
@@ -204,7 +238,7 @@
                         <div class="form-group">
 
                             <label for="username" class="col-form-label sr-only">姓名</label>
-                            <input type="text"  autofocus class="form-control" id="username"
+                            <input type="text" autofocus class="form-control" id="username"
                                    placeholder="用户名">
                             <br>
                             <br>

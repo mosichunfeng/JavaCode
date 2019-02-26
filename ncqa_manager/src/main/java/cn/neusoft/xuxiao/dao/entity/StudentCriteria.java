@@ -14,6 +14,8 @@ public class StudentCriteria extends BasePage {
 
     private String student_class;
 
+    private Integer student_class_id;
+
     private String student_gender;
 
     private String student_tel;
