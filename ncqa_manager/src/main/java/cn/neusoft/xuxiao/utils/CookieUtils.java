@@ -185,7 +185,7 @@ public final class CookieUtils {
 //                    cookie.setDomain(domainName);
 //                }
 //            }
-            cookie.setDomain("139.199.170.177:4397/");
+            cookie.setDomain("139.199.170.177:4397");
             cookie.setPath("/");
             response.addCookie(cookie);
         } catch (Exception e) {
