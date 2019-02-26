@@ -201,7 +201,10 @@ public final class CookieUtils {
         System.out.println("server_name====>>>"+serverName);
         if (serverName == null || serverName.equals("")) {
             domainName = "";
-        } else {
+        }else if(serverName.startsWith("http://139.199.170.177:4397")){
+            domainName="139.199.170.177";
+        }
+        else {
             serverName = serverName.toLowerCase();
             serverName = serverName.substring(7);
             final int end = serverName.indexOf("/");
