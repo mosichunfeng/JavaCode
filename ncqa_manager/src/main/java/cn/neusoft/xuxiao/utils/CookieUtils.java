@@ -147,14 +147,13 @@ public final class CookieUtils {
             Cookie cookie = new Cookie(cookieName, cookieValue);
             if (cookieMaxage > 0)
                 cookie.setMaxAge(cookieMaxage);
-//            if (null != request) {// 设置域名的cookie
-//                String domainName = getDomainName(request);
-//                System.out.println(domainName);
-//                if (!"139.199.170.177".equals(domainName)) {
-//                    cookie.setDomain(domainName);
-//                }
-//            }
-            cookie.setDomain("139.199.170.177:4397");
+            if (null != request) {// 设置域名的cookie
+                String domainName = getDomainName(request);
+                System.out.println(domainName);
+                if (!"139.199.170.177".equals(domainName)) {
+                    cookie.setDomain(domainName);
+                }
+            }
             cookie.setPath("/");
             response.addCookie(cookie);
         } catch (Exception e) {
@@ -178,14 +177,13 @@ public final class CookieUtils {
             Cookie cookie = new Cookie(cookieName, cookieValue);
             if (cookieMaxage > 0)
                 cookie.setMaxAge(cookieMaxage);
-//            if (null != request) {// 设置域名的cookie
-//                String domainName = getDomainName(request);
-//                System.out.println("===>>"+domainName);
-//                if (!"127.0.0.1".equals(domainName)) {
-//                    cookie.setDomain(domainName);
-//                }
-//            }
-            cookie.setDomain("139.199.170.177:4397");
+            if (null != request) {// 设置域名的cookie
+                String domainName = getDomainName(request);
+                System.out.println("===>>"+domainName);
+                if (!"139.199.170.177".equals(domainName)) {
+                    cookie.setDomain(domainName);
+                }
+            }
             cookie.setPath("/");
             response.addCookie(cookie);
         } catch (Exception e) {
@@ -203,8 +201,8 @@ public final class CookieUtils {
         System.out.println("server_name====>>>"+serverName);
         if (serverName == null || serverName.equals("")) {
             domainName = "";
-        }else if(serverName.startsWith("http://127.0.0.1:4397")){
-            domainName="127.0.0.1";
+        }else if(serverName.startsWith("http://139.199.170.177:4397")){
+            domainName="139.199.170.177";
         }
         else {
             serverName = serverName.toLowerCase();
