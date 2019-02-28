@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.neusoft.xuxiao.dao.inf.ILogDao">
+
+    <sql id="insert">
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="user_id != null">
+                user_id,
+            </if>
+            <if test="user_name != null">
+                user_name,
+            </if>
+            <if test="url != null">
+                url,
+            </if>
+            <if test="method != null">
+                method,
+            </if>
+            <if test="params != null">
+                params,
+            </if>
+            <if test="client_ip != null">
+                client_ip,
+            </if>
+            <if test="class_name != null">
+                class_name,
+            </if>
+            <if test="request_time != null">
+                request_time,
+            </if>
+            <if test="response_time != null">
+                response_time,
+            </if>
+            <if test="spend_time != null">
+                spend_time,
+            </if>
+            <if test="response_code != null">
+                response_code,
+            </if>
+            <if test="response_remark != null">
+                response_remark,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="user_id != null">
+                #{user_id,jdbcType=INTEGER},
+            </if>
+            <if test="user_name != null">
+                #{user_name,jdbcType=VARCHAR},
+            </if>
+            <if test="url != null">
+                #{url,jdbcType=VARCHAR},
+            </if>
+            <if test="method != null">
+                #{method,jdbcType=VARCHAR},
+            </if>
+            <if test="params != null">
+                #{params,jdbcType=VARCHAR},
+            </if>
+            <if test="client_ip != null">
+                #{client_ip,jdbcType=VARCHAR},
+            </if>
+            <if test="class_name != null">
+                #{class_name,jdbcType=VARCHAR},
+            </if>
+            <if test="request_time != null">
+                #{request_time,jdbcType=VARCHAR},
+            </if>
+            <if test="response_time != null">
+                #{response_time,jdbcType=VARCHAR},
+            </if>
+            <if test="spend_time != null">
+                #{spend_time,jdbcType=INTEGER},
+            </if>
+            <if test="response_code != null">
+                #{response_code,jdbcType=INTEGER},
+            </if>
+            <if test="response_remark != null">
+                #{response_remark,jdbcType=VARCHAR},
+            </if>
+        </trim>
+    </sql>
+
+    <sql id="update">
+        <if test="response_time != null">
+            response_time = #{response_time,jdbcType=VARCHAR},
+        </if>
+        <if test="spend_time != null">
+            spend_time = #{spend_time,jdbcType=VARCHAR},
+        </if>
+        <if test="response_code != null">
+            response_code = #{response_code,jdbcType=INTEGER},
+        </if>
+        <if test="response_remark != null">
+            response_remark = #{response_remark,jdbcType=VARCHAR},
+        </if>
+    </sql>
+
+    <insert id="insertRequestLog" parameterType="cn.neusoft.xuxiao.dao.entity.RequestLog">
+        <selectKey resultType="java.lang.Integer" order="AFTER" keyProperty="id">
+            SELECT LAST_INSERT_ID()
+        </selectKey>
+        INSERT INTO
+        request_log
+        <include refid="insert"/>
+    </insert>
+
+    <update id="updateRequestLog" parameterType="cn.neusoft.xuxiao.dao.entity.RequestLog">
+        UPDATE request_log
+        <set>
+            <include refid="update"/>
+        </set>
+        WHERE
+        id=#{id}
+    </update>
+
+</mapper>
