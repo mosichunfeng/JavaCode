@@ -150,7 +150,7 @@ public final class CookieUtils {
             if (null != request) {// 设置域名的cookie
                 String domainName = getDomainName(request);
                 System.out.println(domainName);
-                if (!"139.199.170.177".equals(domainName)) {
+                if (!"127.0.0.1".equals(domainName)) {
                     cookie.setDomain(domainName);
                 }
             }
@@ -180,7 +180,7 @@ public final class CookieUtils {
             if (null != request) {// 设置域名的cookie
                 String domainName = getDomainName(request);
                 System.out.println("===>>"+domainName);
-                if (!"139.199.170.177".equals(domainName)) {
+                if (!"127.0.0.1".equals(domainName)) {
                     cookie.setDomain(domainName);
                 }
             }
@@ -201,8 +201,8 @@ public final class CookieUtils {
         System.out.println("server_name====>>>"+serverName);
         if (serverName == null || serverName.equals("")) {
             domainName = "";
-        }else if(serverName.startsWith("http://139.199.170.177:4397")){
-            domainName="139.199.170.177";
+        }else if(serverName.startsWith("http://127.0.0.1:4397")){
+            domainName="127.0.0.1";
         }
         else {
             serverName = serverName.toLowerCase();
