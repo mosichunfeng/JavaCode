@@ -205,6 +205,8 @@ public class CallServiceImpl implements ICallService {
         Call call = callDao.findCallById(call_id);
 
         RegisterCriteria registerCriteria = new RegisterCriteria();
+        registerCriteria.setPageNo(null);
+        registerCriteria.setPageSize(null);
         registerCriteria.setStart_time(call.getStart_time());
         registerCriteria.setEnd_time(call.getEnd_time());
 
