@@ -68,4 +68,6 @@ public interface IStudentDao{
     List<Student> findStudentListByClassId(Integer class_id);
 
     List<String> findStudentIdListByClassId(Integer class_id);
+
+    int findStudentCountByClassId(Integer class_id);
 }

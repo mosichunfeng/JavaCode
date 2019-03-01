@@ -41,4 +41,6 @@ public interface IStudentService {
     void deleteClass(ClassInfo classInfo);
 
     GetClassListResponse classList();
+
+    void addStudent(Student student);
 }

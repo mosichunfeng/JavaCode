@@ -327,4 +327,12 @@
         WHERE
           student_id = #{student_id}
     </select>
+
+    <select id="findStudentCountByClassId" parameterType="java.lang.Integer" resultType="java.lang.Integer">
+        SELECT
+          COUNT(1)
+        FROM
+          student
+        WHERE student_class_id  = #{class_id}
+    </select>
 </mapper>

@@ -90,7 +90,16 @@ public class StudentController extends BaseController {
         studentService.deleteStudent(student);
         return generateResponse(ServiceResponseCode.OK);
     }
-
+    /**
+     * 添加学士
+     */
+    @RequestMapping("/addStudent")
+    @ResponseBody
+    public String addStudent(Student student,HttpServletResponse response,HttpServletRequest request){
+        User user = checkAndReturnUser(request, response);
+        studentService.addStudent(student);
+        return generateResponse(ServiceResponseCode.OK);
+    }
     /**
      * 修改学生
      */

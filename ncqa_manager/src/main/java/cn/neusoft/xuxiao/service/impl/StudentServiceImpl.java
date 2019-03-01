@@ -12,6 +12,7 @@ import cn.neusoft.xuxiao.service.inf.IStudentService;
 import cn.neusoft.xuxiao.utils.ExcelUtil;
 import cn.neusoft.xuxiao.utils.PageTemplateUtil;
 import cn.neusoft.xuxiao.utils.StringUtil;
+import cn.neusoft.xuxiao.utils.ValidationUtils;
 import cn.neusoft.xuxiao.webapi.entity.*;
 import org.apache.poi.hssf.usermodel.*;
 import org.slf4j.Logger;
@@ -186,6 +187,9 @@ public class StudentServiceImpl implements IStudentService {
 
         GetClassIndexResponse result = new GetClassIndexResponse();
         List<ClassInfo> classInfoList = studentDao.pageQueryClass(reqMsg);
+        for (ClassInfo classInfo : classInfoList) {
+            classInfo.setMember(studentDao.findStudentCountByClassId(classInfo.getId()));
+        }
         result.setClassInfoList(classInfoList);
         paginationResult.setBasePage(pageInfo);
         paginationResult.setResult(result);
@@ -214,5 +218,14 @@ public class StudentServiceImpl implements IStudentService {
         GetClassListResponse response = new GetClassListResponse();
         response.setClassList(classInfoList);
         return response;
+    }
+
+    @Override
+    public void addStudent(Student student) {
+        ValidationUtils.checkNotEmpty(student.getStudent_id(), "学号不能为空");
+        if(studentDao.findStudentByStudentId(student.getStudent_id())==null){
+            throw new BusinessException("该学生已存在！", String.valueOf(ServiceResponseCode.BUSINESS_EXCEPTION));
+        }
+        studentDao.insertStudent(student);
     }
 }
