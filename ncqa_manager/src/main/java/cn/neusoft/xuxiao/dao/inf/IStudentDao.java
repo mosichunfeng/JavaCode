@@ -63,6 +63,8 @@ public interface IStudentDao{
 
     ClassInfo findClassById(Integer id);
 
+
+
     Student findStudentByStudentId(String id);
 
     List<Student> findStudentListByClassId(Integer class_id);
@@ -70,4 +72,11 @@ public interface IStudentDao{
     List<String> findStudentIdListByClassId(Integer class_id);
 
     int findStudentCountByClassId(Integer class_id);
+
+    ClassInfo findClassByName(String name);
+
+    Integer findWxUserByStudentId(String id);
+
+    void cancelBind(String studen_id);
+
 }

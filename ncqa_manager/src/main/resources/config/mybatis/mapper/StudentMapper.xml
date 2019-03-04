@@ -335,4 +335,26 @@
           student
         WHERE student_class_id  = #{class_id}
     </select>
+
+    <select id="findClassByName" parameterType="java.lang.String" resultType="cn.neusoft.xuxiao.dao.entity.ClassInfo">
+        SELECT
+          *
+        FROM
+          class
+        where name = #{name}
+    </select>
+
+    <select id="findWxUserByStudentId" parameterType="java.lang.String" resultType="java.lang.Integer">
+        SELECT
+          id
+        FROM
+          wx_user
+        WHERE student_id=#{id}
+    </select>
+
+    <delete id="cancelBind" parameterType="java.lang.String">
+        DELETE FROM
+          wx_user
+        WHERE student_id =#{student_id}
+    </delete>
 </mapper>

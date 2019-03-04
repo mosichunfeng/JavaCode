@@ -168,6 +168,17 @@ public class StudentController extends BaseController {
         return createResponse(result, ServiceResponseCode.OK);
     }
 
+    /**
+     * 微信解绑
+     */
+    @RequestMapping("/cancelBind")
+    @ResponseBody
+    public String cancelBind(HttpServletRequest request,HttpServletResponse response,String id){
+        User user = checkAndReturnUser(request, response);
+        studentService.cancelBind(id);
+        return generateResponse(ServiceResponseCode.OK);
+    }
+
     public static void trimAll(StudentCriteria studentCriteria) {
         if (studentCriteria != null) {
             if (studentCriteria.getStudent_id() != null) {

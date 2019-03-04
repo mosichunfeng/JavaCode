@@ -223,9 +223,24 @@ public class StudentServiceImpl implements IStudentService {
     @Override
     public void addStudent(Student student) {
         ValidationUtils.checkNotEmpty(student.getStudent_id(), "学号不能为空");
-        if(studentDao.findStudentByStudentId(student.getStudent_id())==null){
+        ValidationUtils.checkNotEmpty(student.getStudent_class(), "班级不能为空!");
+
+        ClassInfo classByName = studentDao.findClassByName(student.getStudent_class());
+
+        student.setStudent_class_id(classByName.getId());
+        if(studentDao.findStudentByStudentId(student.getStudent_id())!=null){
             throw new BusinessException("该学生已存在！", String.valueOf(ServiceResponseCode.BUSINESS_EXCEPTION));
         }
         studentDao.insertStudent(student);
+    }
+
+    @Override
+    public void cancelBind(String id) {
+        ValidationUtils.checkNotEmpty(id, "该学生不存在");
+
+        if(studentDao.findWxUserByStudentId(id)==null){
+            throw new BusinessException(String.valueOf(ServiceResponseCode.BUSINESS_EXCEPTION), "该账号未绑定，无法解绑！");
+        }
+        studentDao.cancelBind(id);
     }
 }

@@ -43,4 +43,6 @@ public interface IStudentService {
     GetClassListResponse classList();
 
     void addStudent(Student student);
+
+    void cancelBind(String id);
 }
