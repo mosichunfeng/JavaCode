@@ -23,6 +23,7 @@
 
     <div class="hh">
         <span class="label label-warning zz"><#if user.username??>${user.username}</#if></span>
+        <a class="btn btn-info btn-sm" href="http://139.199.170.177:4397/main.html">首页</a>
         <a class="btn btn-info btn-sm" href="http://139.199.170.177:4397/logout">退出登录</a>
         <button class="btn btn-success btn-sm" onclick="createBaseEvent(1008611)">新增题库</a></button>
     </div>
