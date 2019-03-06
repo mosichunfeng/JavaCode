@@ -318,7 +318,7 @@ public class QuestionServiceImpl implements IQuestionService {
         if (reqMsg.getRowSrt() == null) {
             reqMsg.setRowSrt(new Integer(0));
         }
-        reqMsg.setPageSize(5);
+        reqMsg.setPageSize(15);
 
         PaginationResult<GetQuestionIndexResponse> paginationResult = new PaginationResult<>();
 
