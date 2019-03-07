@@ -21,8 +21,8 @@
 
     <div class="hh">
         <span class="label label-warning zz"><#if user.username??>${user.username}</#if></span>
-        <a class="btn btn-info btn-sm" href="http://139.199.170.177:4397/main.html">首页</a>
-        <a class="btn btn-info btn-sm" href="http://139.199.170.177:4397/logout">退出登录</a>
+        <a class="btn btn-info btn-sm" href="http://127.0.0.1:4397/main.html">首页</a>
+        <a class="btn btn-info btn-sm" href="http://127.0.0.1:4397/logout">退出登录</a>
         <button class="btn btn-success btn-sm" onclick="start()">开始点名</a></button>
     </div>
     <br>
@@ -54,12 +54,12 @@
                     </td>
                     <td>
                         <a type="button" class="btn btn-info"
-                           href="http://139.199.170.177:4397/register/findRegisterListByCallId?call_id=${call.id}">查看列表
+                           href="http://127.0.0.1:4397/register/findRegisterListByCallId?call_id=${call.id}">查看列表
                         </a>
                         <a type="button" class="btn btn-success"
-                           href="http://139.199.170.177:4397/call/exportCallExcel?call_id=${call.id}">导出
+                           href="http://127.0.0.1:4397/call/exportCallExcel?call_id=${call.id}">导出
                             <a type="button" class="btn btn-warning"
-                               href="http://139.199.170.177:4397/call/exportNoCallExcel?call_id=${call.id}">导出未签到</a>
+                               href="http://127.0.0.1:4397/call/exportNoCallExcel?call_id=${call.id}">导出未签到</a>
                         </a>
                     </td>
                 </tr>
@@ -73,15 +73,15 @@
             <div class="form-group">
                 <div class="input-inline input-inline">
                     <#if result.basePage.pageNo != 1>
-                        <a class="btn btn-success " href="http://139.199.170.177:4397/call/pageQuery">首页</a>
+                        <a class="btn btn-success " href="http://127.0.0.1:4397/call/pageQuery">首页</a>
                         <a class="btn btn-success "
-                           href="http://139.199.170.177:4397/call/pageQuery?pageNo=${result.basePage.pageNo-1}&rowSrt=${result.basePage.rowSrt-result.basePage.pageSize}">上一页</a>
+                           href="http://127.0.0.1:4397/call/pageQuery?pageNo=${result.basePage.pageNo-1}&rowSrt=${result.basePage.rowSrt-result.basePage.pageSize}">上一页</a>
                     </#if>
                     <#if (result.basePage.pageNo<result.basePage.pages)>
                         <a class="btn btn-success"
-                           href="http://139.199.170.177:4397/call/pageQuery?pageNo=${result.basePage.pageNo+1}&rowSrt=${result.basePage.rowSrt+result.basePage.pageSize}">下一页</a>
+                           href="http://127.0.0.1:4397/call/pageQuery?pageNo=${result.basePage.pageNo+1}&rowSrt=${result.basePage.rowSrt+result.basePage.pageSize}">下一页</a>
                         <a class="btn btn-success"
-                           href="http://139.199.170.177:4397/call/pageQuery?pageNo=${result.basePage.pages}">尾页</a>
+                           href="http://127.0.0.1:4397/call/pageQuery?pageNo=${result.basePage.pages}">尾页</a>
                     </#if>
                     <input type="text" class="form-control input-medium" id="page_index" placeholder="页数">
                     <button class="btn btn-success ">跳页</button>

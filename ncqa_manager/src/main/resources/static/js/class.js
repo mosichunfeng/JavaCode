@@ -29,14 +29,14 @@ $("#createFileSureBut").click(function () {
     var xmlHttp = createXMLHttpRequest();
     if (p == 1) {
         //修改
-        xmlHttp.open("POST", "http://139.199.170.177:4397/student/modifyClass", "true");
+        xmlHttp.open("POST", "http://127.0.0.1:4397/student/modifyClass", "true");
         xmlHttp.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
         xmlHttp.send(data);
         xmlHttp.onreadystatechange = function () {
             checkStatus("修改成功!",xmlHttp);
         }
     } else {
-        xmlHttp.open("POST", "http://139.199.170.177:4397/student/insertClass", "true");
+        xmlHttp.open("POST", "http://127.0.0.1:4397/student/insertClass", "true");
         xmlHttp.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
         xmlHttp.send(data);
         xmlHttp.onreadystatechange = function () {
@@ -48,7 +48,7 @@ $("#createFileSureBut").click(function () {
 $("#make_sure").click(function () {
     var class_id = $("#class_id2").val();
     var xmlHttp = createXMLHttpRequest();
-    xmlHttp.open("POST", "http://139.199.170.177:4397/student/deleteClass", "true");
+    xmlHttp.open("POST", "http://127.0.0.1:4397/student/deleteClass", "true");
     xmlHttp.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
     xmlHttp.send("id=" + class_id);
     xmlHttp.onreadystatechange = function () {

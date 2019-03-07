@@ -4,6 +4,7 @@ import cn.neusoft.xuxiao.constants.ServiceResponseCode;
 import cn.neusoft.xuxiao.dao.entity.*;
 import cn.neusoft.xuxiao.dao.inf.IQuestionDao;
 import cn.neusoft.xuxiao.exception.BusinessException;
+import cn.neusoft.xuxiao.service.inf.IAuthorityService;
 import cn.neusoft.xuxiao.service.inf.IQuestionService;
 import cn.neusoft.xuxiao.utils.ExcelUtil2;
 import cn.neusoft.xuxiao.utils.PageTemplateUtil;
@@ -36,6 +37,7 @@ public class QuestionServiceImpl implements IQuestionService {
 
     @Resource(name = "IQuestionDao")
     private IQuestionDao questionDao;
+
 
     @Override
     public PaginationResult<GetQuestionBaseIndexResponse> pageQueryBase(QuestionBaseCriteria reqMsg) {
@@ -342,4 +344,5 @@ public class QuestionServiceImpl implements IQuestionService {
 
         return paginationResult;
     }
+
 }

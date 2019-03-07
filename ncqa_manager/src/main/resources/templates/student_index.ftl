@@ -19,14 +19,14 @@
 
     <div class="hh">
         <span class="label label-warning zz"><#if user.username??>${user.username}</#if></span>
-        <a class="btn btn-info btn-sm" href="http://139.199.170.177:4397/main.html">首页</a>
-        <a class="btn btn-info btn-sm" href="http://139.199.170.177:4397/logout">退出登录</a>
+        <a class="btn btn-info btn-sm" href="http://127.0.0.1:4397/main.html">首页</a>
+        <a class="btn btn-info btn-sm" href="http://127.0.0.1:4397/logout">退出登录</a>
     </div>
     <br>
     <br>
     <#if flag??>
-        <#else>
-            <form action="http://139.199.170.177:4397/student/pageQuery" class="form-inline xi">
+    <#else>
+            <form action="http://127.0.0.1:4397/student/pageQuery" class="form-inline xi">
                 <div class="form-group">
                     <label for="student_id" class="sr-only">学号：</label>
                     <input type="text" name="student_id"
@@ -65,22 +65,24 @@
                     <label for="submit" class="sr-only">搜索:</label>
                     <input type="submit" class="btn btn-default" placeholder="搜索"/>
                 </div>
-                <a class="btn btn-info btn-sm" href="http://139.199.170.177:4397/student/pageQueryClass">班级管理</a>
+                <a class="btn btn-info btn-sm" href="http://127.0.0.1:4397/student/pageQueryClass">班级管理</a>
+        <#if result.authority.auth_add == 1>
                 <button type="button" class="btn btn-info" onclick="importFile()">导入</button>
                 <button type="button" class="btn btn-info" onclick="ShowCreateModal3()">新增</button>
-            </form>
         </#if>
-        <br/>
+            </form>
+    </#if>
+    <br/>
     <table class=" table table-bordered table-striped table-hover ">
-    <tr class="warning">
-        <td>学号</td>
-        <td>姓名</td>
-        <td>班级</td>
-        <td>性别</td>
-        <td>手机号</td>
-        <td>是否实习</td>
-        <td>可操作列表</td>
-    </tr>
+        <tr class="warning">
+            <td>学号</td>
+            <td>姓名</td>
+            <td>班级</td>
+            <td>性别</td>
+            <td>手机号</td>
+            <td>是否实习</td>
+            <td>可操作列表</td>
+        </tr>
 
 
             <#if result.result.studentList??>
@@ -109,14 +111,19 @@
                     </#if>
                     </td>
                     <td>
+                    <#if result.authority.auth_add == 1>
                         <button type="button" class="btn btn-info"
                                 onclick="ShowCreateModal(${student.id},${student.student_id})">编辑
                         </button>
+                    </#if>
+                    <#if result.authority.auth_delete == 1>
                         <button type="button" class="btn btn-success"
                                 onclick="ShowCreateModal2('${student.student_name}',${student.id})">
                             删除
                         </button>
-                        <a type="button" class="btn btn-warning" href="http://139.199.170.177:4397/user/cancelBind?id=${student.id}">解绑</a>
+                    </#if>
+                        <a type="button" class="btn btn-warning"
+                           href="http://127.0.0.1:4397/user/cancelBind?id=${student.id}">解绑</a>
                     </td>
                 </tr>
                 </#list>
@@ -127,7 +134,7 @@
             <div class="form-group">
                 <div class="input-inline input-inline">
                     <#if result.basePage.pageNo != 1>
-                        <a class="btn btn-info btn-sm" href="http://139.199.170.177:4397/student/pageQuery?student_id=
+                        <a class="btn btn-info btn-sm" href="http://127.0.0.1:4397/student/pageQuery?student_id=
                         <#if searchInfo.student_id??>
                                 ${searchInfo.student_id}
                         </#if>
@@ -152,7 +159,7 @@
                             ${searchInfo.work_detail}
                         </#if>">首页</a>
                         <a class="btn btn-info btn-sm"
-                           href="http://139.199.170.177:4397/student/pageQuery?pageNo=${result.basePage.pageNo-1}&rowSrt=${result.basePage.rowSrt-result.basePage.pageSize}&student_id=
+                           href="http://127.0.0.1:4397/student/pageQuery?pageNo=${result.basePage.pageNo-1}&rowSrt=${result.basePage.rowSrt-result.basePage.pageSize}&student_id=
                         <#if searchInfo.student_id??>
                                 ${searchInfo.student_id}
                         </#if>
@@ -181,7 +188,7 @@
 
                     <#if (result.basePage.pageNo<result.basePage.pages)>
                         <a class="btn btn-info btn-sm"
-                           href="http://139.199.170.177:4397/student/pageQuery?pageNo=${result.basePage.pageNo+1}&rowSrt=${result.basePage.rowSrt+result.basePage.pageSize}&student_id=
+                           href="http://127.0.0.1:4397/student/pageQuery?pageNo=${result.basePage.pageNo+1}&rowSrt=${result.basePage.rowSrt+result.basePage.pageSize}&student_id=
                         <#if searchInfo.student_id??>
                                 ${searchInfo.student_id}
                         </#if>
@@ -206,7 +213,7 @@
                             ${searchInfo.work_detail}
                         </#if>">下一页</a>
                         <a class="btn btn-info btn-sm"
-                           href="http://139.199.170.177:4397/student/pageQuery?pageNo=${result.basePage.pages}&student_id=
+                           href="http://127.0.0.1:4397/student/pageQuery?pageNo=${result.basePage.pages}&student_id=
                         <#if searchInfo.student_id??>
                                 ${searchInfo.student_id}
                         </#if>
@@ -256,7 +263,7 @@
                             <label for="student_name2" class="col-form-label sr-only">姓名</label>
                             <input type="text" autofocus class="form-control" id="student_name2"
                                    placeholder="姓名">
-                            <#--<label for="student_class2" class="col-form-label">班级</label>-->
+                        <#--<label for="student_class2" class="col-form-label">班级</label>-->
 
                             <select id="student_class2" class="form-control">
                             <#--<option value="网络工程15201">网络工程15201</option>-->
@@ -297,7 +304,7 @@
                             <label for="student_name3" class="col-form-label sr-only">姓名</label>
                             <input type="text" autofocus class="form-control" id="student_name3"
                                    placeholder="姓名">
-                            <#--<label for="student_class3" class="col-form-label">班级</label>-->
+                        <#--<label for="student_class3" class="col-form-label">班级</label>-->
 
                             <select id="student_class3" class="form-control">
                             <#--<option value="网络工程15201">网络工程15201</option>-->
@@ -366,7 +373,7 @@
                     <h4 class="modal-title" id="sure">Excel模板上传</h4>
                 </div>
                 <div class="modal-body">
-                    <form enctype="multipart/form-data" action="http://139.199.170.177:4397/student/importStudent"
+                    <form enctype="multipart/form-data" action="http://127.0.0.1:4397/student/importStudent"
                           method="post">
                         <input type="file" name="proxyfile" id="input-file" style="display: none;"
                                accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel">
@@ -376,7 +383,7 @@
                         <label class="control-label" id="select-info">未选择文件</label>
                         <br>
                         <br>
-                        <a class="btn btn-success" href="http://139.199.170.177:4397/student/exportTemplate"
+                        <a class="btn btn-success" href="http://127.0.0.1:4397/student/exportTemplate"
                            id="tp_dw">模板下载</a>
 
                 </div>

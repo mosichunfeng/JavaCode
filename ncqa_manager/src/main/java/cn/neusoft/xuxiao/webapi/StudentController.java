@@ -1,7 +1,9 @@
 package cn.neusoft.xuxiao.webapi;
 
 
+import cn.neusoft.xuxiao.constants.AuthorityConstants;
 import cn.neusoft.xuxiao.constants.ServiceResponseCode;
+import cn.neusoft.xuxiao.constants.UserAuthorityConstants;
 import cn.neusoft.xuxiao.dao.entity.*;
 import cn.neusoft.xuxiao.service.inf.IStudentService;
 import cn.neusoft.xuxiao.utils.StringUtil;
@@ -36,11 +38,12 @@ public class StudentController extends BaseController {
      * @return
      */
     @RequestMapping("/pageQuery")
-    public String pageQuery(StudentCriteria reqMsg,Integer flag, ModelMap map, HttpServletRequest request, HttpServletResponse response) {
+    public String pageQuery(StudentCriteria reqMsg, Integer flag, ModelMap map, HttpServletRequest request, HttpServletResponse response) {
         User user = checkAndReturnUser(request, response);
         trimAll(reqMsg);
         PaginationResult<GetStudentIndexResponse> result = studentService.pageQuery(reqMsg);
-        if(reqMsg.getStudent_class_id()!=null || (flag!=null&&flag==1)){
+        result.setAuthority(queryAuthorityForThis(user, AuthorityConstants.STUDENT_AUTH));
+        if (reqMsg.getStudent_class_id() != null || (flag != null && flag == 1)) {
             map.put("flag", 1);
         }
         map.put("result", result);
@@ -67,7 +70,9 @@ public class StudentController extends BaseController {
      */
     @RequestMapping("/importStudent")
     @ResponseBody
-    public String importStudent(@RequestParam("proxyfile") MultipartFile file){
+    public String importStudent(@RequestParam("proxyfile") MultipartFile file, HttpServletRequest request, HttpServletResponse response) {
+        User user = checkAndReturnUser(request, response);
+        checkAuthorityAndExit(user,AuthorityConstants.STUDENT_AUTH,UserAuthorityConstants.AUTH_ADD);
         studentService.importStudent(file);
         return generateResponse(ServiceResponseCode.OK);
     }
@@ -76,7 +81,7 @@ public class StudentController extends BaseController {
      * 导出模板
      */
     @RequestMapping("exportTemplate")
-    public void exportTemplate(HttpServletResponse response){
+    public void exportTemplate(HttpServletResponse response) {
         studentService.exportTemplate(response);
     }
 
@@ -87,19 +92,23 @@ public class StudentController extends BaseController {
     @ResponseBody
     public String deleteStudent(Student student, HttpServletRequest request, HttpServletResponse response) {
         User user = checkAndReturnUser(request, response);
+        checkAuthorityAndExit(user,AuthorityConstants.STUDENT_AUTH,UserAuthorityConstants.AUTH_DELETE);
         studentService.deleteStudent(student);
         return generateResponse(ServiceResponseCode.OK);
     }
+
     /**
      * 添加学士
      */
     @RequestMapping("/addStudent")
     @ResponseBody
-    public String addStudent(Student student,HttpServletResponse response,HttpServletRequest request){
+    public String addStudent(Student student, HttpServletResponse response, HttpServletRequest request) {
         User user = checkAndReturnUser(request, response);
+        checkAuthorityAndExit(user,AuthorityConstants.STUDENT_AUTH,UserAuthorityConstants.AUTH_ADD);
         studentService.addStudent(student);
         return generateResponse(ServiceResponseCode.OK);
     }
+
     /**
      * 修改学生
      */
@@ -107,6 +116,7 @@ public class StudentController extends BaseController {
     @ResponseBody
     public String updateStudents(Student student, HttpServletRequest request, HttpServletResponse response) {
         User user = checkAndReturnUser(request, response);
+        checkAuthorityAndExit(user,AuthorityConstants.STUDENT_AUTH,UserAuthorityConstants.AUTH_MODIFY);
         studentService.updateStudent(student);
         return generateResponse(ServiceResponseCode.OK);
     }
@@ -115,9 +125,10 @@ public class StudentController extends BaseController {
      * 查询班级
      */
     @RequestMapping("/pageQueryClass")
-    public String pageQueryClass(ClassInfoCriteria reqMsg,ModelMap map,HttpServletRequest request,HttpServletResponse response){
+    public String pageQueryClass(ClassInfoCriteria reqMsg, ModelMap map, HttpServletRequest request, HttpServletResponse response) {
         User user = checkAndReturnUser(request, response);
         PaginationResult<GetClassIndexResponse> result = studentService.pageQueryClass(reqMsg);
+        result.setAuthority(queryAuthorityForThis(user, AuthorityConstants.REGISTER_AUTH));
         map.put("result", result);
         map.put("searchInfo", reqMsg);
         map.put("user", user);
@@ -129,18 +140,21 @@ public class StudentController extends BaseController {
      */
     @RequestMapping("/modifyClass")
     @ResponseBody
-    public String modifyClass(ClassInfo classInfo,HttpServletResponse response, HttpServletRequest request){
+    public String modifyClass(ClassInfo classInfo, HttpServletResponse response, HttpServletRequest request) {
         User user = checkAndReturnUser(request, response);
+        checkAuthorityAndExit(user,AuthorityConstants.STUDENT_AUTH,UserAuthorityConstants.AUTH_MODIFY);
         studentService.modifyClass(classInfo);
         return generateResponse(ServiceResponseCode.OK);
     }
+
     /**
      * 新增班级
      */
     @RequestMapping("/insertClass")
     @ResponseBody
-    public String insertClass(HttpServletRequest request,HttpServletResponse response,ClassInfo classInfo){
+    public String insertClass(HttpServletRequest request, HttpServletResponse response, ClassInfo classInfo) {
         User user = checkAndReturnUser(request, response);
+        checkAuthorityAndExit(user,AuthorityConstants.STUDENT_AUTH,UserAuthorityConstants.AUTH_ADD);
         studentService.insertClass(classInfo);
         return generateResponse(ServiceResponseCode.OK);
     }
@@ -150,19 +164,21 @@ public class StudentController extends BaseController {
      */
     @RequestMapping("/deleteClass")
     @ResponseBody
-    public String deleteClass(ClassInfo classInfo,HttpServletResponse response,HttpServletRequest request){
+    public String deleteClass(ClassInfo classInfo, HttpServletResponse response, HttpServletRequest request) {
         User user = checkAndReturnUser(request, response);
+        checkAuthorityAndExit(user,AuthorityConstants.STUDENT_AUTH,UserAuthorityConstants.AUTH_DELETE);
         studentService.deleteClass(classInfo);
         return generateResponse(ServiceResponseCode.OK);
     }
 
     /**
      * 班级列表
+     *
      * @param
      */
     @RequestMapping("/classList")
     @ResponseBody
-    public String classList(HttpServletRequest request,HttpServletResponse response){
+    public String classList(HttpServletRequest request, HttpServletResponse response) {
         User user = checkAndReturnUser(request, response);
         GetClassListResponse result = studentService.classList();
         return createResponse(result, ServiceResponseCode.OK);
@@ -173,7 +189,7 @@ public class StudentController extends BaseController {
      */
     @RequestMapping("/cancelBind")
     @ResponseBody
-    public String cancelBind(HttpServletRequest request,HttpServletResponse response,String id){
+    public String cancelBind(HttpServletRequest request, HttpServletResponse response, String id) {
         User user = checkAndReturnUser(request, response);
         studentService.cancelBind(id);
         return generateResponse(ServiceResponseCode.OK);

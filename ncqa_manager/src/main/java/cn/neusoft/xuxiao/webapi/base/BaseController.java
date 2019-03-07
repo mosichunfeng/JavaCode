@@ -1,23 +1,23 @@
 package cn.neusoft.xuxiao.webapi.base;
 
 import cn.neusoft.xuxiao.constants.ServiceResponseCode;
+import cn.neusoft.xuxiao.dao.entity.Authority;
 import cn.neusoft.xuxiao.dao.entity.User;
 import cn.neusoft.xuxiao.exception.BusinessException;
 import cn.neusoft.xuxiao.exception.CommonRuntimeException;
+import cn.neusoft.xuxiao.service.inf.IAuthorityService;
 import cn.neusoft.xuxiao.utils.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.io.PrintWriter;
-import java.io.StringWriter;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -27,6 +27,9 @@ public class BaseController {
 
     @Autowired
     private RedisUtil redisUtil;
+
+    @Resource(name = "authorityServiceImpl")
+    private IAuthorityService authorityService;
 
     protected String generateResponse(int code) {
         BaseResponse result = new BaseResponse();
@@ -94,7 +97,7 @@ public class BaseController {
     }
 
 
-    protected User checkAndReturnUser(HttpServletRequest request,HttpServletResponse response){
+    protected User checkAndReturnUser(HttpServletRequest request, HttpServletResponse response) {
         String token = CookieUtils.getCookieValue(request, "ncqa_token");
         if (StringUtil.isEmpty(token)) {
             request.getSession().setAttribute("orgin_url", request.getRequestURL());
@@ -105,8 +108,8 @@ public class BaseController {
             }
             throw new BusinessException(String.valueOf(ServiceResponseCode.NOT_LOG_IN), "未登录");
         }
-        String  userData = (String) redisUtil.get("SESSION:" + token);
-        if(StringUtil.isEmpty(userData)){
+        String userData = (String) redisUtil.get("SESSION:" + token);
+        if (StringUtil.isEmpty(userData)) {
             try {
                 response.sendRedirect("http://127.0.0.1:4397/login.html");
             } catch (IOException e) {
@@ -114,7 +117,29 @@ public class BaseController {
             }
             throw new BusinessException(String.valueOf(ServiceResponseCode.NOT_LOG_IN), "未登录");
         }
-        redisUtil.expire("SESSION:"+token, 1800);
+        redisUtil.expire("SESSION:" + token, 1800);
         return JsonTool.jsonToObject(userData, User.class);
+    }
+
+    protected Authority queryAuthorityForThis(User user, int group_id) {
+         return authorityService.findAuthByUserAndGroup(user.getId(), group_id);
+
+    }
+
+    protected void checkAuthorityAndExit(User user, int group_id, String method){
+        Authority authority = queryAuthorityForThis(user, group_id);
+        if(method.equals("add")){
+            if(authority.getAuth_add()==0){
+                throw new BusinessException(String.valueOf(ServiceResponseCode.NO_CREATE_PERMISSION),"您没有权限，别再给我发POST请求了!");
+            }
+        }else if(method.equals("modify")){
+            if(authority.getAuth_modify()==0){
+                throw new BusinessException(String.valueOf(ServiceResponseCode.NO_CREATE_PERMISSION),"您没有权限，别再给我发POST请求了!");
+            }
+        }else if(method.equals("delete")){
+            if(authority.getAuth_delete()==0){
+                throw new BusinessException(String.valueOf(ServiceResponseCode.NO_CREATE_PERMISSION),"您没有权限，别再给我发POST请求了!");
+            }
+        }
     }
 }

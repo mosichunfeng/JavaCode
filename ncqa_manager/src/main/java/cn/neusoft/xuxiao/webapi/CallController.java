@@ -1,6 +1,8 @@
 package cn.neusoft.xuxiao.webapi;
 
+import cn.neusoft.xuxiao.constants.AuthorityConstants;
 import cn.neusoft.xuxiao.constants.ServiceResponseCode;
+import cn.neusoft.xuxiao.constants.UserAuthorityConstants;
 import cn.neusoft.xuxiao.dao.entity.Call;
 import cn.neusoft.xuxiao.dao.entity.CallCriteria;
 import cn.neusoft.xuxiao.dao.entity.User;
@@ -29,6 +31,7 @@ public class CallController extends BaseController {
     public String pageQuery(CallCriteria reqMsg, HttpServletRequest request, ModelMap map, HttpServletResponse response){
         User user = checkAndReturnUser(request,response);
         PaginationResult<GetCallIndexResponse> result= callService.pageQuery(reqMsg);
+        result.setAuthority(queryAuthorityForThis(user, AuthorityConstants.REGISTER_AUTH));
         map.put("result", result);
         map.put("user", user);
         return "call";
@@ -38,6 +41,7 @@ public class CallController extends BaseController {
     @ResponseBody
     public String insertCall(Call call,HttpServletRequest request,HttpServletResponse response){
         User user = checkAndReturnUser(request,response);
+        checkAuthorityAndExit(user,AuthorityConstants.REGISTER_AUTH,UserAuthorityConstants.AUTH_ADD);
         callService.insertCall(call);
         return generateResponse(ServiceResponseCode.OK);
     }

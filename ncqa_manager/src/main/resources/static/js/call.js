@@ -16,7 +16,7 @@ $("#createFileSureBut").click(function () {
             check_val.push(obj[k].value);
     }
     var xmlHttp = createXMLHttpRequest();
-    xmlHttp.open("POST", "http://139.199.170.177:4397/call/insertCall", "true");
+    xmlHttp.open("POST", "http://127.0.0.1:4397/call/insertCall", "true");
     xmlHttp.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
     xmlHttp.send("cost_time=" + cost_time+"&classes="+check_val);
     xmlHttp.onreadystatechange = function () {

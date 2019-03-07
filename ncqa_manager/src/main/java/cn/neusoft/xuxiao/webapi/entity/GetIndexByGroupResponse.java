@@ -24,4 +24,6 @@ public class GetIndexByGroupResponse {
      * 签到权限列表
      */
     private List<Authority> authorityList3;
+
+    private Authority authority;
 }

@@ -1,5 +1,6 @@
 package cn.neusoft.xuxiao.webapi;
 
+import cn.neusoft.xuxiao.constants.AuthorityConstants;
 import cn.neusoft.xuxiao.constants.ServiceResponseCode;
 import cn.neusoft.xuxiao.dao.entity.RegisterCriteria;
 import cn.neusoft.xuxiao.dao.entity.User;
@@ -29,6 +30,7 @@ public class RegisterController extends BaseController {
     public String pageQuery(RegisterCriteria reqMsg, HttpServletRequest request, HttpServletResponse response, ModelMap map){
         User user = checkAndReturnUser(request,response);
         PaginationResult<GetRegisterIndexResponse> result = registerService.pageQuery(reqMsg);
+        result.setAuthority(queryAuthorityForThis(user, AuthorityConstants.REGISTER_AUTH));
         map.put("user", user);
         return "register_index";
     }
@@ -37,6 +39,7 @@ public class RegisterController extends BaseController {
     public String findRegisterListByCallId(ModelMap map,RegisterCriteria reqMsg,HttpServletRequest request,HttpServletResponse response){
         User user = checkAndReturnUser(request,response);
         PaginationResult<FindRegisterListResponse> result = registerService.findRegisterListByCallId(reqMsg);
+        result.setAuthority(queryAuthorityForThis(user, AuthorityConstants.REGISTER_AUTH));
         map.put("user", user);
         map.put("result", result);
         map.put("call_id", reqMsg.getCall_id());

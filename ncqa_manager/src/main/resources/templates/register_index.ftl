@@ -23,8 +23,8 @@
 
     <div class="hh">
         <span class="label label-warning zz"><#if user.username??>${user.username}</#if></span>
-        <a class="btn btn-info btn-sm" href="http://139.199.170.177:4397/main.html">首页</a>
-        <a class="btn btn-info btn-sm" href="http://139.199.170.177:4397/logout">退出登录</a>
+        <a class="btn btn-info btn-sm" href="http://127.0.0.1:4397/main.html">首页</a>
+        <a class="btn btn-info btn-sm" href="http://127.0.0.1:4397/logout">退出登录</a>
     </div>
 
     <table class="table table-bordered table-striped table-hover ">
@@ -60,12 +60,12 @@
             <div class="form-group">
                 <div class="input-inline input-inline">
                     <#if result.basePage.pageNo != 1>
-                        <a class="btn btn-success " href="http://139.199.170.177:4397/register/findRegisterListByCallId?call_id=${call_id}">首页</a>
-                        <a class="btn btn-success " href="http://139.199.170.177:4397/register/findRegisterListByCallId?call_id=${call_id}&pageNo=${result.basePage.pageNo-1}&rowSrt=${result.basePage.rowSrt-result.basePage.pageSize}">上一页</a>
+                        <a class="btn btn-success " href="http://127.0.0.1:4397/register/findRegisterListByCallId?call_id=${call_id}">首页</a>
+                        <a class="btn btn-success " href="http://127.0.0.1:4397/register/findRegisterListByCallId?call_id=${call_id}&pageNo=${result.basePage.pageNo-1}&rowSrt=${result.basePage.rowSrt-result.basePage.pageSize}">上一页</a>
                     </#if>
                     <#if (result.basePage.pageNo<result.basePage.pages)>
-                        <a class="btn btn-success" href="http://139.199.170.177:4397/register/findRegisterListByCallId?call_id=${call_id}&pageNo=${result.basePage.pageNo+1}&rowSrt=${result.basePage.rowSrt+result.basePage.pageSize}">下一页</a>
-                        <a class="btn btn-success" href="http://139.199.170.177:4397/register/findRegisterListByCallId?call_id=${call_id}&pageNo=${result.basePage.pages}">尾页</a>
+                        <a class="btn btn-success" href="http://127.0.0.1:4397/register/findRegisterListByCallId?call_id=${call_id}&pageNo=${result.basePage.pageNo+1}&rowSrt=${result.basePage.rowSrt+result.basePage.pageSize}">下一页</a>
+                        <a class="btn btn-success" href="http://127.0.0.1:4397/register/findRegisterListByCallId?call_id=${call_id}&pageNo=${result.basePage.pages}">尾页</a>
                     </#if>
                     <input type="text" class="form-control input-medium" id="page_index" placeholder="页数">
                     <button class="btn btn-success ">跳页</button>

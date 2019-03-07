@@ -1,6 +1,8 @@
 package cn.neusoft.xuxiao.webapi;
 
+import cn.neusoft.xuxiao.constants.AuthorityConstants;
 import cn.neusoft.xuxiao.constants.ServiceResponseCode;
+import cn.neusoft.xuxiao.constants.UserAuthorityConstants;
 import cn.neusoft.xuxiao.dao.entity.*;
 import cn.neusoft.xuxiao.exception.BusinessException;
 import cn.neusoft.xuxiao.service.inf.IQuestionService;
@@ -38,6 +40,7 @@ public class QuestionController extends BaseController {
     public String pageQuery(Integer remark1,QuestionCriteria questionCriteria, ModelMap map, HttpServletRequest request,HttpServletResponse response,QuestionCriteriaFill fill) {
         User user = checkAndReturnUser(request,response);
         PaginationResult<GetQuestionIndexResponse> result = questionService.pageQuery(questionCriteria);
+        result.setAuthority(queryAuthorityForThis(user, AuthorityConstants.QUESTION_AUTH));
         QuestionCriteria questionCriteria1 = new QuestionCriteria();
         questionCriteria1.setPageNo(fill.getPageNo1());
         questionCriteria1.setPageSize(fill.getPageSize1());
@@ -54,6 +57,7 @@ public class QuestionController extends BaseController {
     public String pageQueryFill(ModelMap map,HttpServletRequest request,HttpServletResponse response,QuestionCriteria reqMsg){
         User user = checkAndReturnUser(request,response);
         PaginationResult<GetQuestionIndexResponse> result = questionService.pageQueryFill(reqMsg);
+        result.setAuthority(queryAuthorityForThis(user, AuthorityConstants.QUESTION_AUTH));
         map.put("result",result);
         map.put("user", user);
         return "question_index";
@@ -63,6 +67,7 @@ public class QuestionController extends BaseController {
     public String pageQueryBase(QuestionBaseCriteria questionBaseCriteria, ModelMap map, HttpServletRequest request,HttpServletResponse response) {
         User user = checkAndReturnUser(request,response);
         PaginationResult<GetQuestionBaseIndexResponse> result = questionService.pageQueryBase(questionBaseCriteria);
+        result.setAuthority(queryAuthorityForThis(user, AuthorityConstants.QUESTION_AUTH));
         map.put("result", result);
         map.put("user", user);
         return "question_base_index";
@@ -72,6 +77,7 @@ public class QuestionController extends BaseController {
     @ResponseBody
     public String insertQuestionBase(QuestionBase questionBase, HttpServletRequest request,HttpServletResponse response) {
         User user = checkAndReturnUser(request,response);
+        checkAuthorityAndExit(user,AuthorityConstants.QUESTION_AUTH,UserAuthorityConstants.AUTH_ADD);
         questionService.insertQuestionBase(questionBase);
         return generateResponse(ServiceResponseCode.OK);
     }
@@ -81,6 +87,7 @@ public class QuestionController extends BaseController {
     @ResponseBody
     public String updateQuestionBase(QuestionBase questionBase, HttpServletRequest request,HttpServletResponse response) {
         User user = checkAndReturnUser(request,response);
+        checkAuthorityAndExit(user,AuthorityConstants.QUESTION_AUTH,UserAuthorityConstants.AUTH_MODIFY);
         questionService.updateQuestionBase(questionBase);
         return generateResponse(ServiceResponseCode.OK);
     }
@@ -89,6 +96,7 @@ public class QuestionController extends BaseController {
     @ResponseBody
     public String deleteQuestionBase(QuestionBase questionBase, HttpServletRequest request,HttpServletResponse response) {
         User user = checkAndReturnUser(request,response);
+        checkAuthorityAndExit(user,AuthorityConstants.QUESTION_AUTH,UserAuthorityConstants.AUTH_DELETE);
         questionService.deleteQuestionBase(questionBase);
         return generateResponse(ServiceResponseCode.OK);
     }
@@ -101,12 +109,12 @@ public class QuestionController extends BaseController {
     }
 
     /**
-     * 模板下载
+     * 模板下载（暂时废弃）
      */
-    @RequestMapping("/exportTemplate")
-    public void exportTemplate(HttpServletResponse response) {
-        questionService.exportTemplate(response);
-    }
+//    @RequestMapping("/exportTemplate")
+ //   public void exportTemplate(HttpServletResponse response) {
+  //      questionService.exportTemplate(response);
+   // }
 
 
     /**
@@ -124,6 +132,7 @@ public class QuestionController extends BaseController {
     @RequestMapping("/importQuestion")
     public void importQuesion(@RequestParam("proxyfile") MultipartFile file, int question_base_id, HttpServletRequest request, HttpServletResponse response) throws IOException {
         User user = checkAndReturnUser(request,response);
+        checkAuthorityAndExit(user,AuthorityConstants.QUESTION_AUTH,UserAuthorityConstants.AUTH_ADD);
         questionService.importQuesion(file, question_base_id);
         response.sendRedirect("/question/pageQuery?question_base_id=" + question_base_id);
     }

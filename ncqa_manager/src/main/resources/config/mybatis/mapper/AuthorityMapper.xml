@@ -108,4 +108,15 @@
         AND
           group_id = #{group_id}
     </select>
+
+    <select id="findAuthByUserAndGroup" resultType="cn.neusoft.xuxiao.dao.entity.Authority">
+        SELECT
+          *
+        FROM
+          authority
+        WHERE
+          user_id = #{user_id}
+        AND
+          group_id = #{group_id}
+    </select>
 </mapper>

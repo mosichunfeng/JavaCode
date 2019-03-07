@@ -21,9 +21,11 @@
 
     <div class="hh">
         <span class="label label-warning zz"><#if user.username??>${user.username}</#if></span>
-        <a class="btn btn-info btn-sm" href="http://139.199.170.177:4397/main.html">首页</a>
-        <a class="btn btn-info btn-sm" href="http://139.199.170.177:4397/logout">退出登录</a>
+        <a class="btn btn-info btn-sm" href="http://127.0.0.1:4397/main.html">首页</a>
+        <a class="btn btn-info btn-sm" href="http://127.0.0.1:4397/logout">退出登录</a>
+        <#if result.authority.auth_add == 1>
         <button class="btn btn-success btn-sm" onclick="insert()">新增班级</a></button>
+        </#if>
     </div>
     <br>
     <br>
@@ -51,9 +53,13 @@
                     </#if>
                     </td>
                     <td>
+                 <#if result.authority.auth_modify == 1>
                         <button type="button" class="btn btn-info" onclick="modify(${classInfo.id},'${classInfo.name}')">编辑</button>
+                     </#if>
+                 <#if result.authority.auth_delete == 1>
                         <button type="button" class="btn btn-success" onclick="drop(${classInfo.id},'${classInfo.name}')">删除</button>
-                        <a type="button" class="btn btn-warning" href="http://139.199.170.177:4397/student/pageQuery?student_class_id=${classInfo.id}&flag=1">学生列表</a>
+                 </#if>
+                        <a type="button" class="btn btn-warning" href="http://127.0.0.1:4397/student/pageQuery?student_class_id=${classInfo.id}&flag=1">学生列表</a>
                     </td>
                 </tr>
              </#list>
@@ -66,12 +72,12 @@
             <div class="form-group">
                 <div class="input-inline input-inline">
                     <#if result.basePage.pageNo != 1>
-                        <a class="btn btn-success " href="http://139.199.170.177:4397/student/pageQueryClass">首页</a>
-                        <a class="btn btn-success " href="http://139.199.170.177:4397/student/pageQueryClass?pageNo=${result.basePage.pageNo-1}&rowSrt=${result.basePage.rowSrt-result.basePage.pageSize}">上一页</a>
+                        <a class="btn btn-success " href="http://127.0.0.1:4397/student/pageQueryClass">首页</a>
+                        <a class="btn btn-success " href="http://127.0.0.1:4397/student/pageQueryClass?pageNo=${result.basePage.pageNo-1}&rowSrt=${result.basePage.rowSrt-result.basePage.pageSize}">上一页</a>
                     </#if>
                     <#if (result.basePage.pageNo<result.basePage.pages)>
-                        <a class="btn btn-success" href="http://139.199.170.177:4397/student/pageQueryClass?pageNo=${result.basePage.pageNo+1}&rowSrt=${result.basePage.rowSrt+result.basePage.pageSize}">下一页</a>
-                        <a class="btn btn-success" href="http://139.199.170.177:4397/student/pageQueryClass?pageNo=${result.basePage.pages}">尾页</a>
+                        <a class="btn btn-success" href="http://127.0.0.1:4397/student/pageQueryClass?pageNo=${result.basePage.pageNo+1}&rowSrt=${result.basePage.rowSrt+result.basePage.pageSize}">下一页</a>
+                        <a class="btn btn-success" href="http://127.0.0.1:4397/student/pageQueryClass?pageNo=${result.basePage.pages}">尾页</a>
                     </#if>
                     <input type="text" class="form-control input-medium" id="page_index" placeholder="页数">
                     <button class="btn btn-success ">跳页</button>

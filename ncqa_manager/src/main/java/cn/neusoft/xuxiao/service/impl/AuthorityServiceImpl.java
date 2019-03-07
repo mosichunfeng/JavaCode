@@ -25,10 +25,10 @@ import java.util.List;
 public class AuthorityServiceImpl implements IAuthorityService {
     private static Logger logger = LoggerFactory.getLogger(AuthorityServiceImpl.class);
 
-    @Resource(name="IAuthorityDao")
+    @Resource(name = "IAuthorityDao")
     private IAuthorityDao authorityDao;
 
-    @Resource(name="IUserDao")
+    @Resource(name = "IUserDao")
     private IUserDao userDao;
 
     @Override
@@ -57,8 +57,6 @@ public class AuthorityServiceImpl implements IAuthorityService {
         }
 
 
-
-
         GetIndexByGroupResponse result = new GetIndexByGroupResponse();
         result.setAuthorityList(authorityList);
         result.setAuthorityList2(authorityList2);
@@ -85,10 +83,10 @@ public class AuthorityServiceImpl implements IAuthorityService {
          */
         Authority[] authorityArr = new Authority[4];
 
-        for(int i=0;i<4;i++){
+        for (int i = 0; i < 4; i++) {
             authorityArr[i] = new Authority();
             authorityArr[i].setUser_id(uid);
-            authorityArr[i].setGroup_id(i+1);
+            authorityArr[i].setGroup_id(i + 1);
             authorityDao.insertAuthority(authorityArr[i]);
 
         }
@@ -99,4 +97,11 @@ public class AuthorityServiceImpl implements IAuthorityService {
         ValidationUtils.checkNotEmpty(reqMsg.getId(), "id不能为空");
         authorityDao.updateAuthority(reqMsg);
     }
+
+    @Override
+    public Authority findAuthByUserAndGroup(int user_id, int group_id) {
+        return authorityDao.findAuthByUserAndGroup(user_id, group_id);
+    }
+
+
 }

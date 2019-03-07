@@ -73,7 +73,7 @@ $("#createFileSureBut").click(function () {
             var xmlHttp = createXMLHttpRequest();
             if (whereIn == 0) {
                 //修改
-                xmlHttp.open("POST", "http://139.199.170.177:4397/question/updateQuestionBase", "true");
+                xmlHttp.open("POST", "http://127.0.0.1:4397/question/updateQuestionBase", "true");
                 xmlHttp.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
                 var data = "id=" + id + "&name=" + name + "&kind_id=" + kind +
                     "&description=" + description + "&start_time=" +
@@ -83,7 +83,7 @@ $("#createFileSureBut").click(function () {
                     checkStatus("修改成功!",xmlHttp);
                 }
             } else {
-                xmlHttp.open("POST", "http://139.199.170.177:4397/question/insertQuestionBase", "true");
+                xmlHttp.open("POST", "http://127.0.0.1:4397/question/insertQuestionBase", "true");
                 xmlHttp.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
                 var data = "name=" + name + "&kind_id=" + kind +
                     "&description=" + description + "&start_time=" +
@@ -118,7 +118,7 @@ $("#make_sure").click(function () {
     //执行ajax删除
     var id = $("#qb_id2").val();
     var xmlHttp = createXMLHttpRequest();
-    xmlHttp.open("POST", "http://139.199.170.177:4397/question/deleteQuestionBase", "true");
+    xmlHttp.open("POST", "http://127.0.0.1:4397/question/deleteQuestionBase", "true");
     xmlHttp.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
     xmlHttp.send("id=" + id);
     xmlHttp.onreadystatechange = function () {
@@ -146,7 +146,7 @@ function book(title) {
 function getChoose(isInArgue) {
     if (!isInArgue) {
         var xmlHttp = createXMLHttpRequest();
-        xmlHttp.open("GET", "http://139.199.170.177:4397/question/findAllKind", "false");
+        xmlHttp.open("GET", "http://127.0.0.1:4397/question/findAllKind", "false");
         xmlHttp.send(null);
         xmlHttp.onreadystatechange = function () {
             if (xmlHttp.readyState == 4 && xmlHttp.status == 200) {
