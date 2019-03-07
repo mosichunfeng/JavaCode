@@ -57,4 +57,9 @@ public interface IQuestionDao{
      */
     void insertRightAnswer(List<RightAnswer> paramList);
 
+    Integer pageQuery_Count3(QuestionCriteria questionCriteria);
+
+    List<Question> pageQueryFill(QuestionCriteria questionCriteria);
+
+    RightAnswer findRightAnswer(Integer id);
 }

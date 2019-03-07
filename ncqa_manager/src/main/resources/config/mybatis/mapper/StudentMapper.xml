@@ -162,6 +162,7 @@
         <trim prefixOverrides="AND | OR " prefix="WHERE">
             <include refid="page_query_condition"/>
         </trim>
+        ORDER BY student_id
         <if test="pageSize > 0">
             LIMIT #{rowSrt}, #{pageSize}
         </if>
@@ -218,6 +219,7 @@
         FROM
           student
         where student_id = #{student_id};
+        ORDER BY student_id
     </select>
 
     <select id="pageQueryClass_Count" resultType="java.lang.Integer">
@@ -317,6 +319,7 @@
           student
         WHERE
           student_class_id = #{class_id}
+        ORDER BY student_id
     </select>
 
     <select id="findStudentIdListByClassId" parameterType="java.lang.Integer" resultType="java.lang.String">

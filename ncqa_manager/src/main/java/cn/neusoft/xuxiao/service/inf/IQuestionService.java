@@ -28,4 +28,6 @@ public interface IQuestionService {
     void exportExamGrade(HttpServletResponse response,int question_base_id);
 
     void importQuesion(MultipartFile file, int question_base_id);
+
+    PaginationResult<GetQuestionIndexResponse> pageQueryFill(QuestionCriteria reqMsg);
 }

@@ -14,5 +14,5 @@ public class RightAnswer {
 
     private String right_answer_content;
 
-
+    private Integer answer_type;
 }

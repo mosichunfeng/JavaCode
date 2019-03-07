@@ -5,7 +5,7 @@ import cn.neusoft.xuxiao.dao.entity.*;
 import cn.neusoft.xuxiao.dao.inf.IQuestionDao;
 import cn.neusoft.xuxiao.exception.BusinessException;
 import cn.neusoft.xuxiao.service.inf.IQuestionService;
-import cn.neusoft.xuxiao.utils.ExcelUtil;
+import cn.neusoft.xuxiao.utils.ExcelUtil2;
 import cn.neusoft.xuxiao.utils.PageTemplateUtil;
 import cn.neusoft.xuxiao.utils.TimeTool;
 import cn.neusoft.xuxiao.utils.ValidationUtils;
@@ -34,12 +34,12 @@ public class QuestionServiceImpl implements IQuestionService {
 
     private static Logger logger = LoggerFactory.getLogger(QuestionServiceImpl.class);
 
-    @Resource(name="IQuestionDao")
+    @Resource(name = "IQuestionDao")
     private IQuestionDao questionDao;
 
     @Override
     public PaginationResult<GetQuestionBaseIndexResponse> pageQueryBase(QuestionBaseCriteria reqMsg) {
-        if(reqMsg.getRowSrt()==null){
+        if (reqMsg.getRowSrt() == null) {
             reqMsg.setRowSrt(new Integer(0));
         }
         reqMsg.setPageSize(6);
@@ -47,7 +47,7 @@ public class QuestionServiceImpl implements IQuestionService {
         PaginationResult<GetQuestionBaseIndexResponse> paginationResult = new PaginationResult<>();
 
         Integer pageCnt = questionDao.pageQuery_Count(reqMsg);
-        if (pageCnt==null) {
+        if (pageCnt == null) {
             paginationResult.setBasePage(new BasePage());
             return paginationResult;
         }
@@ -97,7 +97,7 @@ public class QuestionServiceImpl implements IQuestionService {
     public void exportTemplate(HttpServletResponse response) {
         HSSFWorkbook workbook = new HSSFWorkbook();
         HSSFSheet sheet = workbook.createSheet("题目模板");
-        String[] headers = {"编号", "题目", "选项类型","选项A", "选项B","选项C","选项D","正确答案"};
+        String[] headers = {"编号", "题目", "选项类型", "选项A", "选项B", "选项C", "选项D", "正确答案"};
         String fileName = "题目上传模板" + System.currentTimeMillis() + ".xls";
         try {
             fileName = new String(fileName.getBytes("GB2312"), "8859_1");
@@ -143,7 +143,7 @@ public class QuestionServiceImpl implements IQuestionService {
 
     @Override
     public PaginationResult<GetQuestionIndexResponse> pageQuery(QuestionCriteria reqMsg) {
-        if(reqMsg.getRowSrt()==null){
+        if (reqMsg.getRowSrt() == null) {
             reqMsg.setRowSrt(new Integer(0));
         }
         reqMsg.setPageSize(10);
@@ -151,7 +151,7 @@ public class QuestionServiceImpl implements IQuestionService {
         PaginationResult<GetQuestionIndexResponse> paginationResult = new PaginationResult<>();
 
         Integer pageCnt = questionDao.pageQuery_Count2(reqMsg);
-        if (pageCnt==null) {
+        if (pageCnt == null) {
             paginationResult.setBasePage(new BasePage());
             return paginationResult;
         }
@@ -169,16 +169,16 @@ public class QuestionServiceImpl implements IQuestionService {
     }
 
     @Override
-    public void exportExamGrade(HttpServletResponse response,int question_base_id) {
-        ValidationUtils.checkNotEmpty(question_base_id,"题库id不能为空");
+    public void exportExamGrade(HttpServletResponse response, int question_base_id) {
+        ValidationUtils.checkNotEmpty(question_base_id, "题库id不能为空");
 
         QuestionBase questionBase = questionDao.getQuestionBaseById(question_base_id);
         List<GradeDO> gradeList = questionDao.findGradeListByBaseId(question_base_id);
 
         HSSFWorkbook workbook = new HSSFWorkbook();
         HSSFSheet sheet = workbook.createSheet("成绩表");
-        String[] headers = {"学号","姓名","班级","分数","答题开始时间","答题结束时间"};
-        String fileName = questionBase.getName()+System.currentTimeMillis()+".xls";
+        String[] headers = {"学号", "姓名", "班级", "分数", "答题开始时间", "答题结束时间"};
+        String fileName = questionBase.getName() + System.currentTimeMillis() + ".xls";
         try {
             fileName = new String(fileName.getBytes("GB2312"), "8859_1");
         } catch (UnsupportedEncodingException e) {
@@ -186,13 +186,13 @@ public class QuestionServiceImpl implements IQuestionService {
         }
         int rowNum = 1;
         HSSFRow row = sheet.createRow(0);
-        for(int i=0;i<headers.length;i++){
+        for (int i = 0; i < headers.length; i++) {
             HSSFCell cell = row.createCell(i);
             HSSFRichTextString text = new HSSFRichTextString(headers[i]);
             cell.setCellValue(text);
         }
 
-        for (int i = 0;i<gradeList.size();i++) {
+        for (int i = 0; i < gradeList.size(); i++) {
             GradeDO grade = gradeList.get(i);
             HSSFRow row1 = sheet.createRow(rowNum);
             row1.createCell(0).setCellValue(grade.getStudent_id());
@@ -210,35 +210,38 @@ public class QuestionServiceImpl implements IQuestionService {
             response.flushBuffer();
             workbook.write(response.getOutputStream());
         } catch (IOException e) {
-            throw new BusinessException(String.valueOf(ServiceResponseCode.BUSINESS_EXCEPTION),"服务器异常，请联系管理员！");
+            throw new BusinessException(String.valueOf(ServiceResponseCode.BUSINESS_EXCEPTION), "服务器异常，请联系管理员！");
         }
     }
 
     @Override
     public void importQuesion(MultipartFile file, int question_base_id) {
         String fileName = file.getOriginalFilename();
-        String[] columns = { "问题编号", "题目", "选项类型", "选项A", "选项B", "选项C", "选项D", "正确答案" };
+        String[] columns = {"问题编号", "题目", "选项类型", "选项A", "选项B", "选项C", "选项D", "正确答案", "分值", "问题编号", "题目", "正确答案", "分值"};
+
         InputStream is = null;
         try {
             is = file.getInputStream();
         } catch (IOException e) {
             e.printStackTrace();
         }
-        List<Map<String, String>> list = ExcelUtil.parseExcel(fileName, is, columns);
+        List<Map<String, String>>[] list = ExcelUtil2.parseExcel(fileName, is, columns);
 
         List<Question> questionList = new ArrayList<Question>();
         List<Answer> answerList = new ArrayList<Answer>();
         List<RightAnswer> rightAnswerList = new ArrayList<RightAnswer>();
         Question question = null;
-        for (Map<String, String> map : list) {
+        for (Map<String, String> map : list[0]) {
             question = new Question();
             question.setQuestion_base_id(Integer.valueOf(question_base_id));
             question.setQuestion_index(Integer.valueOf((String) map.get("问题编号")).intValue());
             question.setContent((String) map.get("题目"));
+            question.setQuestion_type(1);
+            question.setGrade(Integer.valueOf((String) map.get("分值")).intValue());
             String type = map.get("选项类型");
-            if(type.equals("单选")){
+            if (type.equals("单选")) {
                 question.setSelect_type(0);
-            }else{
+            } else {
                 question.setSelect_type(1);
             }
 
@@ -247,26 +250,31 @@ public class QuestionServiceImpl implements IQuestionService {
             answer.setQuestion_id(Integer.valueOf((String) map.get("问题编号")).intValue());
             answer.setAnswer_index("选项A");
             answer.setAnswer_content((String) map.get("选项A"));
+            answer.setAnswer_type(1);
 
             Answer answer1 = new Answer();
             answer1.setQuestion_id(Integer.valueOf((String) map.get("问题编号")).intValue());
             answer1.setAnswer_index("选项B");
             answer1.setAnswer_content((String) map.get("选项B"));
+            answer1.setAnswer_type(1);
 
             Answer answer2 = new Answer();
             answer2.setQuestion_id(Integer.valueOf((String) map.get("问题编号")).intValue());
             answer2.setAnswer_index("选项C");
             answer2.setAnswer_content((String) map.get("选项C"));
+            answer2.setAnswer_type(1);
 
             Answer answer3 = new Answer();
             answer3.setQuestion_id(Integer.valueOf((String) map.get("问题编号")).intValue());
             answer3.setAnswer_index("选项D");
             answer3.setAnswer_content((String) map.get("选项D"));
+            answer3.setAnswer_type(1);
 
             RightAnswer rightAnswer = new RightAnswer();
             rightAnswer.setQuestion_id(Integer.valueOf((String) map.get("问题编号")).intValue());
             rightAnswer.setRight_answer_index((String) map.get("正确答案"));
             rightAnswer.setRight_answer_content((String) map.get("选项" + (String) map.get("正确答案")));
+            rightAnswer.setAnswer_type(1);
 
             questionList.add(question);
             answerList.add(answer);
@@ -275,20 +283,63 @@ public class QuestionServiceImpl implements IQuestionService {
             answerList.add(answer3);
             rightAnswerList.add(rightAnswer);
         }
-        System.out.println(rightAnswerList);
+        for (Map<String, String> map1 : list[1]) {
+            question = new Question();
+            question.setQuestion_base_id(Integer.valueOf(question_base_id));
+            question.setQuestion_index(Integer.valueOf((String) map1.get("问题编号")).intValue());
+            question.setContent((String) map1.get("题目"));
+            question.setQuestion_type(2);
+            question.setGrade(Integer.valueOf((String) map1.get("分值")).intValue());
 
+            RightAnswer rightAnswer = new RightAnswer();
+            rightAnswer.setQuestion_id(Integer.valueOf((String) map1.get("问题编号")).intValue());
+            rightAnswer.setRight_answer_content(map1.get("正确答案"));
+
+            questionList.add(question);
+            rightAnswerList.add(rightAnswer);
+        }
         questionDao.insertQuestion(questionList);
         for (Question question1 : questionList) {
             for (Answer answer : answerList) {
                 if (answer.getQuestion_id() == question1.getQuestion_index())
                     answer.setQuestion_id(question1.getId());
             }
-            for(RightAnswer right : rightAnswerList){
-                if(right.getQuestion_id() == question1.getQuestion_index())
+            for (RightAnswer right : rightAnswerList) {
+                if (right.getQuestion_id() == question1.getQuestion_index())
                     right.setQuestion_id(question1.getId());
             }
         }
         this.questionDao.insertAnswer(answerList);
         this.questionDao.insertRightAnswer(rightAnswerList);
+    }
+
+    @Override
+    public PaginationResult<GetQuestionIndexResponse> pageQueryFill(QuestionCriteria reqMsg) {
+        if (reqMsg.getRowSrt() == null) {
+            reqMsg.setRowSrt(new Integer(0));
+        }
+        reqMsg.setPageSize(5);
+
+        PaginationResult<GetQuestionIndexResponse> paginationResult = new PaginationResult<>();
+
+        Integer pageCnt = questionDao.pageQuery_Count3(reqMsg);
+        if (pageCnt == null) {
+            paginationResult.setBasePage(new BasePage());
+            return paginationResult;
+        }
+        BasePage pageInfo = PageTemplateUtil.setBasePage(reqMsg, pageCnt);
+
+        GetQuestionIndexResponse result = new GetQuestionIndexResponse();
+        List<Question> questionList = questionDao.pageQueryFill(reqMsg);
+        for (Question question : questionList) {
+            question.setRightAnswer(questionDao.findRightAnswer(question.getId()));
+        }
+
+        result.setQuestionList(questionList);
+
+        paginationResult.setBasePage(pageInfo);
+        paginationResult.setResult(result);
+
+        return paginationResult;
     }
 }

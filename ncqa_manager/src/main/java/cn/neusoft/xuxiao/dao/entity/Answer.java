@@ -13,4 +13,6 @@ public class Answer {
     private String answer_index;
 
     private String answer_content;
+
+    private Integer answer_type;
 }

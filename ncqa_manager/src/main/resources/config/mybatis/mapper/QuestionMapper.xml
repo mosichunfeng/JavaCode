@@ -163,6 +163,7 @@
         <result column="question_base_id" jdbcType="INTEGER" property="question_base_id"/>
         <result column="select_type" jdbcType="INTEGER" property="select_type"/>
         <result column="content" jdbcType="VARCHAR" property="content"/>
+        <result column="question_type" javaType="INTEGER" property="question_type"/>
         <association property="rightAnswer" javaType="cn.neusoft.xuxiao.dao.entity.RightAnswer">
             <id column="right_answer_id" javaType="INTEGER" property="id"/>
             <result column="ra_question_id" property="question_id"/>
@@ -184,6 +185,7 @@
         q.id,
         q.question_index,
         q.select_type,
+        q.question_type,
         q.content,
         q.question_base_id,
         a.question_id,
@@ -206,8 +208,9 @@
         q1.id
         FROM
         question q1
-        <if test="question_base_id">
-            WHERE q1.question_base_id=#{question_base_id}
+        WHERE q1.question_type = 1
+        <if test="question_base_id!=null">
+            AND q1.question_base_id=#{question_base_id}
         </if>
         <if test="pageSize > 0">
             LIMIT #{rowSrt}, #{pageSize}
@@ -219,9 +222,11 @@
         COUNT(1)
         FROM
         question q
-        <if test="question_base_id">
-            WHERE q.question_base_id=#{question_base_id}
+        WHERE q.question_type = 1
+        <if test="question_base_id!=null">
+            AND q.question_base_id=#{question_base_id}
         </if>
+
     </select>
 
     <select id="findGradeListByBaseId" resultType="cn.neusoft.xuxiao.dao.entity.GradeDO">
@@ -250,16 +255,20 @@
         question(
         question_base_id,
         question_index,
+        question_type,
         select_type,
-        content
+        content,
+        grade
         )
         values
         <foreach collection="list" item="question" separator=",">
             (
             #{question.question_base_id},
             #{question.question_index},
+            #{question.question_type},
             #{question.select_type},
-            #{question.content}
+            #{question.content},
+            #{question.grade}
             )
         </foreach>
     </insert>
@@ -269,14 +278,16 @@
         answer(
         question_id,
         answer_index,
-        answer_content
+        answer_content,
+        answer_type
         )
         values
         <foreach collection="list" item="answer" separator=",">
             (
             #{answer.question_id},
             #{answer.answer_index},
-            #{answer.answer_content}
+            #{answer.answer_content},
+            #{answer.answer_type}
             )
         </foreach>
     </insert>
@@ -285,15 +296,52 @@
         right_answer(
         question_id,
         right_answer_index,
-        right_answer_content
+        right_answer_content,
+        answer_type
         )
         values
         <foreach collection="list" item="right_answer" separator=",">
             (
             #{right_answer.question_id},
             #{right_answer.right_answer_index},
-            #{right_answer.right_answer_content}
+            #{right_answer.right_answer_content},
+            #{right_answer.answer_type}
             )
         </foreach>
     </insert>
+
+    <select id="pageQueryFill" parameterType="cn.neusoft.xuxiao.dao.entity.QuestionCriteria" resultType="cn.neusoft.xuxiao.dao.entity.Question">
+        SELECT
+          *
+        FROM
+          question q
+        WHERE
+          q.question_type = 2
+        <if test="question_base_id = 1">
+            AND q.question_base_id = #{question_base_id}
+        </if>
+        <if test="pageSize > 0">
+            LIMIT #{rowSrt}, #{pageSize}
+        </if>
+    </select>
+    <select id="pageQuery_Count3" parameterType="cn.neusoft.xuxiao.dao.entity.QuestionCriteria" resultType="java.lang.Integer">
+        SELECT
+          COUNT(1)
+        FROM
+          question q
+        WHERE
+        q.question_type = 2
+        <if test="question_base_id = 1">
+            AND q.question_base_id = #{question_base_id}
+        </if>
+    </select>
+
+    <select id="findRightAnswer" parameterType="java.lang.Integer" resultType="cn.neusoft.xuxiao.dao.entity.RightAnswer">
+        SELECT
+          *
+        FROM
+          right_answer
+        WHERE
+          question_id = #{id}
+    </select>
 </mapper>

@@ -21,4 +21,8 @@ public class Question {
 
     private RightAnswer rightAnswer;
 
+    private Integer question_type;
+
+    private Integer grade;
+
 }

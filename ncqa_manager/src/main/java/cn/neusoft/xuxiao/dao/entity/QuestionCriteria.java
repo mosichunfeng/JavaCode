@@ -16,4 +16,6 @@ public class QuestionCriteria extends BasePage {
     private String content;
 
     private Integer question_base_id;
+
+    private Integer question_type;
 }

@@ -35,14 +35,29 @@ public class QuestionController extends BaseController {
 
 
     @RequestMapping("/pageQuery")
-    public String pageQuery(QuestionCriteria questionCriteria, ModelMap map, HttpServletRequest request,HttpServletResponse response) {
+    public String pageQuery(Integer remark1,QuestionCriteria questionCriteria, ModelMap map, HttpServletRequest request,HttpServletResponse response,QuestionCriteriaFill fill) {
         User user = checkAndReturnUser(request,response);
         PaginationResult<GetQuestionIndexResponse> result = questionService.pageQuery(questionCriteria);
+        QuestionCriteria questionCriteria1 = new QuestionCriteria();
+        questionCriteria1.setPageNo(fill.getPageNo1());
+        questionCriteria1.setPageSize(fill.getPageSize1());
+        questionCriteria1.setQuestion_base_id(questionCriteria.getQuestion_base_id());
+        PaginationResult<GetQuestionIndexResponse> result2  = questionService.pageQueryFill(questionCriteria1);
+        map.put("remark1", remark1);
         map.put("result", result);
+        map.put("result2", result2);
         map.put("user", user);
         return "question_index";
     }
 
+    @RequestMapping("/pageQueryFill")
+    public String pageQueryFill(ModelMap map,HttpServletRequest request,HttpServletResponse response,QuestionCriteria reqMsg){
+        User user = checkAndReturnUser(request,response);
+        PaginationResult<GetQuestionIndexResponse> result = questionService.pageQueryFill(reqMsg);
+        map.put("result",result);
+        map.put("user", user);
+        return "question_index";
+    }
 
     @RequestMapping("/pageQueryBase")
     public String pageQueryBase(QuestionBaseCriteria questionBaseCriteria, ModelMap map, HttpServletRequest request,HttpServletResponse response) {

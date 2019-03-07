@@ -117,7 +117,6 @@ function deleteEvent(id) {
 $("#make_sure").click(function () {
     //执行ajax删除
     var id = $("#qb_id2").val();
-    alert(id);
     var xmlHttp = createXMLHttpRequest();
     xmlHttp.open("POST", "http://139.199.170.177:4397/question/deleteQuestionBase", "true");
     xmlHttp.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
