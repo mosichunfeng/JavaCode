@@ -127,6 +127,15 @@ public class QuestionController extends BaseController {
     }
 
     /**
+     * 导出报名表
+     */
+    @RequestMapping("/exportJoin")
+    public void exportJoin(int question_base_id,HttpServletResponse response,HttpServletRequest request){
+        User user = checkAndReturnUser(request,response);
+        questionService.exportJoin(response, question_base_id);
+    }
+
+    /**
      * 导入答题
      */
     @RequestMapping("/importQuestion")

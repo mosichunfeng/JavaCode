@@ -344,4 +344,24 @@
         WHERE
           question_id = #{id}
     </select>
+
+    <select id="findRegisterListByBaseId" parameterType="java.lang.Integer" resultType="cn.neusoft.xuxiao.dao.entity.ActivityCodeDO">
+        SELECT
+		a.code,
+		a.time,
+		q.name,
+		s.student_name,
+		s.student_class,
+		s.student_gender,
+		s.student_id
+        FROM activity_code a
+        INNER JOIN wx_user w
+        ON a.user_id = w.id
+        INNER JOIN student s
+        ON w.student_id = s.student_id
+        INNER JOIN question_base q
+        ON a.question_base_id=q.id
+        WHERE
+          question_base_id = #{question_base_id}
+    </select>
 </mapper>

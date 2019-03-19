@@ -62,4 +62,6 @@ public interface IQuestionDao{
     List<Question> pageQueryFill(QuestionCriteria questionCriteria);
 
     RightAnswer findRightAnswer(Integer id);
+
+    List<ActivityCodeDO> findRegisterListByBaseId(int question_base_id);
 }

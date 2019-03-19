@@ -345,4 +345,51 @@ public class QuestionServiceImpl implements IQuestionService {
         return paginationResult;
     }
 
+    @Override
+    public void exportJoin(HttpServletResponse response, int question_base_id) {
+        List<ActivityCodeDO> activityCode = questionDao.findRegisterListByBaseId(question_base_id);
+        String baseName = "";
+        if(activityCode!=null && activityCode.size()>0){
+            baseName = activityCode.get(0).getName();
+        }
+        HSSFWorkbook workbook = new HSSFWorkbook();
+        HSSFSheet sheet = workbook.createSheet("");
+        String[] headers = {"学号", "姓名","性别", "班级", "活动码", "活动名","报名时间"};
+        String fileName = baseName + "报名表" + ".xls";
+        try {
+            fileName = new String(fileName.getBytes("GB2312"), "8859_1");
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
+        int rowNum = 1;
+        HSSFRow row = sheet.createRow(0);
+        for (int i = 0; i < headers.length; i++) {
+            HSSFCell cell = row.createCell(i);
+            HSSFRichTextString text = new HSSFRichTextString(headers[i]);
+            cell.setCellValue(text);
+        }
+
+        for (int i = 0; i < activityCode.size(); i++) {
+            ActivityCodeDO grade = activityCode.get(i);
+            HSSFRow row1 = sheet.createRow(rowNum);
+            row1.createCell(0).setCellValue(grade.getStudent_id());
+            row1.createCell(1).setCellValue(grade.getStudent_name());
+            row1.createCell(3).setCellValue(grade.getStudent_gender());
+            row1.createCell(2).setCellValue(grade.getStudent_class());
+            row1.createCell(4).setCellValue(grade.getCode());
+            row1.createCell(5).setCellValue(grade.getName());
+            row1.createCell(6).setCellValue(grade.getTime());
+            rowNum++;
+        }
+
+        response.setContentType("application/octet-stream");
+        response.setHeader("Content-disposition", "attachment;filename=" + fileName);
+        try {
+            response.flushBuffer();
+            workbook.write(response.getOutputStream());
+        } catch (IOException e) {
+            throw new BusinessException(String.valueOf(ServiceResponseCode.BUSINESS_EXCEPTION), "服务器异常，请联系管理员！");
+        }
+    }
+
 }

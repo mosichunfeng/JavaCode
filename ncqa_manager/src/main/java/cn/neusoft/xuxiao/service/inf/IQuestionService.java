@@ -30,4 +30,6 @@ public interface IQuestionService {
     void importQuesion(MultipartFile file, int question_base_id);
 
     PaginationResult<GetQuestionIndexResponse> pageQueryFill(QuestionCriteria reqMsg);
+
+    void exportJoin(HttpServletResponse response, int question_base_id);
 }

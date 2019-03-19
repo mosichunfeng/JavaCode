@@ -71,8 +71,8 @@
                 <#if result.authority.auth_add == 1>
                 <button type="button" class="btn btn-info" onclick="importFile(${questionBase.id})">导入</button>
                 </#if>
-
-                <a class="btn btn-warning" href="http://127.0.0.1:4397/question/exportExamGrade?question_base_id=${questionBase.id}">导出</a>
+                <a class="btn btn-warning" href="http://127.0.0.1:4397/question/exportJoin?question_base_id=${questionBase.id}">导出成绩</a>
+                <a class="btn btn-warning" href="http://127.0.0.1:4397/question/exportExamGrade?question_base_id=${questionBase.id}">导出成绩</a>
             </td>
         </tr>
      </#list>
