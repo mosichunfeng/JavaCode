@@ -34,7 +34,6 @@ public class TimeTool {
 	/**
 	 * 根据时间格式获取对应的时间格式化工具
 	 * 
-	 * @author LuoDongXu 
 	 * @date 2018年6月26日 下午4:24:04
 	 * @param pattern
 	 * @return
@@ -50,7 +49,6 @@ public class TimeTool {
 	 * @param date
 	 * @return
 	 * @date 2018年1月31日 下午5:43:41
-	 * @author yangqiang
 	 */
 	public static boolean isWeekEnd(Date date) {
 		Calendar calendar = Calendar.getInstance();
@@ -68,7 +66,6 @@ public class TimeTool {
 	 * @param date
 	 * @return
 	 * @date 2018年1月31日 下午5:43:30
-	 * @author yangqiang
 	 */
 	public static int getHour(Date date) {
 		Calendar calendar = Calendar.getInstance();
@@ -82,7 +79,6 @@ public class TimeTool {
 	 * @param date
 	 * @return
 	 * @date 2018年1月31日 下午5:43:15
-	 * @author yangqiang
 	 */
 	public static int getMinute(Date date) {
 		Calendar calendar = Calendar.getInstance();
@@ -96,7 +92,6 @@ public class TimeTool {
 	 * @param d
 	 * @return
 	 * @date 2018年1月31日 下午5:42:50
-	 * @author yangqiang
 	 */
 	public static int getDateInt(Date d) {
 		String dstr = getSimpleDateFormat(PATTERN_YMD1).format(d);
@@ -108,7 +103,6 @@ public class TimeTool {
 	 * @param d
 	 * @return
 	 * @date 2018年1月31日 下午5:42:12
-	 * @author yangqiang
 	 */
 	public static long getDateMill(Date d) {
 		Calendar cal = Calendar.getInstance();
@@ -122,7 +116,6 @@ public class TimeTool {
 	 * @param millSec
 	 * @return
 	 * @date 2018年1月31日 下午5:41:54
-	 * @author yangqiang
 	 */
 	public static String transferLongToDate(Long millSec) {
 		Date date = new Date(millSec);
@@ -133,7 +126,6 @@ public class TimeTool {
 	 * 获取当前时间
 	 * @return
 	 * @date 2018年1月31日 下午5:41:38
-	 * @author yangqiang
 	 */
 	public static String getTodayTime() {
 		Date d = new Date();
@@ -146,7 +138,6 @@ public class TimeTool {
 	 * @param d
 	 * @return
 	 * @date 2018年1月31日 下午5:40:54
-	 * @author yangqiang
 	 */
 	public static String DateToString(Date d) {
 		if (d != null) {
@@ -162,7 +153,6 @@ public class TimeTool {
 	 * @param d
 	 * @return
 	 * @date 2018年1月31日 下午5:40:54
-	 * @author yang.yi
 	 */
 	public static String DateToShortString2(Date d) {
 		if (d != null) {
@@ -178,7 +168,6 @@ public class TimeTool {
 	 * @param d
 	 * @return
 	 * @date 2018年1月31日 下午5:40:24
-	 * @author yangqiang
 	 */
 	public static String TimeToString(Date d) {
 		if (d != null) {
@@ -194,7 +183,6 @@ public class TimeTool {
 	 * @param f
 	 * @return
 	 * @date 2018年1月31日 下午5:39:43
-	 * @author yangqiang
 	 */
 	public static String DateToShortString(Date f) {
 		if (f != null) {
@@ -295,10 +283,8 @@ public class TimeTool {
 	/**
 	 * 根据当前日期按月推算时间
 	 * 
-	 * @param days
 	 * @return
 	 * @date 2017年9月21日 下午5:58:52
-	 * @author yang
 	 */
 	public static String addMonthTime(int months) {
 		Calendar calendar = Calendar.getInstance();
@@ -314,7 +300,6 @@ public class TimeTool {
 	 * @param months
 	 * @return
 	 * @date 2017年9月21日 下午5:58:52
-	 * @author yang
 	 */
 	public static Date addMonthTime(Date date, int months) {
 		Calendar calendar = Calendar.getInstance();
@@ -330,7 +315,6 @@ public class TimeTool {
 	 * @param days
 	 * @return
 	 * @date 2017年9月21日 下午5:58:52
-	 * @author yang
 	 */
 	public static String addDateTime(int days) {
 		Calendar calendar = Calendar.getInstance();
@@ -347,7 +331,6 @@ public class TimeTool {
 	 * @param days
 	 * @return
 	 * @date 2018年3月28日 下午3:49:41
-	 * @author yang.yi
 	 */
 	public static String addDateTime(Date date, int days) {
 		Calendar calendar = Calendar.getInstance();
@@ -359,7 +342,6 @@ public class TimeTool {
 	/**
 	 * date基础上增加天数days，返回指定格式的字符串
 	 * 
-	 * @author LuoDongXu 
 	 * @date 2018年6月21日 下午3:51:22
 	 * @param date
 	 * @param days
@@ -375,8 +357,7 @@ public class TimeTool {
 	
 	/**
 	 * date基础上增加天数days，返回指定格式的字符串
-	 * 
-	 * @author LuoDongXu 
+	 *
 	 * @date 2018年6月21日 下午4:13:59
 	 * @param date
 	 * @param days
@@ -393,7 +374,6 @@ public class TimeTool {
 	/**
 	 * date基础上增加天数days，返回指定格式的字符串
 	 * 
-	 * @author LuoDongXu 
 	 * @date 2018年6月21日 下午4:13:59
 	 * @param date
 	 * @param days
@@ -412,7 +392,6 @@ public class TimeTool {
 	 * @param millis
 	 * @return
 	 * @date 2018年3月21日 上午11:26:22
-	 * @author yang
 	 */
 	public static String millisToDateStr(long millis) {
 		Calendar calendar = Calendar.getInstance();
@@ -423,7 +402,6 @@ public class TimeTool {
 	
 	/**
 	 * 将日期转换成指定格式
-	 * @author LuoDongXu
 	 * @date 2018年6月6日 下午5:21:29
 	 * @param date
 	 * @param format
@@ -440,8 +418,6 @@ public class TimeTool {
 	 * @param date 时间字符串
 	 * @param pattern 格式
 	 * @return boolean 判断结果
-	 * @author xuweicheng
-	 * @date  2018/8/28
 	*/
 	public static boolean validateDate(String date ,String pattern){
 		boolean result = true;
